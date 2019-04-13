@@ -5,7 +5,19 @@ VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.Manager", "Jarvis.Manager\Jarvis.Manager.csproj", "{22F14A4E-EA06-409E-A3E6-B4396A351E85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jarvis.TestApp", "Jarvis.TestApp\Jarvis.TestApp.csproj", "{56AEDD5E-6022-4F9D-A7A7-E7F4C3836607}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.TestApp", "Jarvis.TestApp\Jarvis.TestApp.csproj", "{56AEDD5E-6022-4F9D-A7A7-E7F4C3836607}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jarvis.SstCloud.Client", "Jarvis.SstCloud.Client\Jarvis.SstCloud.Client.csproj", "{5BD54A55-1D53-4C35-B763-2235236230C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jarvis.SstCloud.Core", "Jarvis.SstCloud.Core\Jarvis.SstCloud.Core.csproj", "{5B41629A-4CE5-4A5C-8995-9AEE5A61034C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00. Libraries", "00. Libraries", "{1AAC1F9B-50BF-4C52-B32C-C619D600C1F8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. Core", "0. Core", "{2097737A-CCA8-44A4-914A-A771685C3AEC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. SstCloud", "1. SstCloud", "{1B4049B3-2102-4561-8DFB-2D01105D07C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jarvis.Core", "Jarvis.Core\Jarvis.Core.csproj", "{E1C7F13A-E08B-4119-B749-68AE69E3D8DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +33,28 @@ Global
 		{56AEDD5E-6022-4F9D-A7A7-E7F4C3836607}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56AEDD5E-6022-4F9D-A7A7-E7F4C3836607}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56AEDD5E-6022-4F9D-A7A7-E7F4C3836607}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BD54A55-1D53-4C35-B763-2235236230C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BD54A55-1D53-4C35-B763-2235236230C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BD54A55-1D53-4C35-B763-2235236230C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BD54A55-1D53-4C35-B763-2235236230C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B41629A-4CE5-4A5C-8995-9AEE5A61034C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B41629A-4CE5-4A5C-8995-9AEE5A61034C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B41629A-4CE5-4A5C-8995-9AEE5A61034C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B41629A-4CE5-4A5C-8995-9AEE5A61034C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1C7F13A-E08B-4119-B749-68AE69E3D8DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1C7F13A-E08B-4119-B749-68AE69E3D8DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1C7F13A-E08B-4119-B749-68AE69E3D8DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1C7F13A-E08B-4119-B749-68AE69E3D8DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5BD54A55-1D53-4C35-B763-2235236230C3} = {1B4049B3-2102-4561-8DFB-2D01105D07C1}
+		{5B41629A-4CE5-4A5C-8995-9AEE5A61034C} = {1B4049B3-2102-4561-8DFB-2D01105D07C1}
+		{2097737A-CCA8-44A4-914A-A771685C3AEC} = {1AAC1F9B-50BF-4C52-B32C-C619D600C1F8}
+		{1B4049B3-2102-4561-8DFB-2D01105D07C1} = {1AAC1F9B-50BF-4C52-B32C-C619D600C1F8}
+		{E1C7F13A-E08B-4119-B749-68AE69E3D8DE} = {2097737A-CCA8-44A4-914A-A771685C3AEC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA6532BB-D075-45B5-B4AA-39D58682FBDD}
