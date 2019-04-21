@@ -48,7 +48,7 @@ namespace Jarvis.SstCloud.Client
 
 		#region API Methods
 
-		public async Task<bool> LogIn()
+		public async Task<bool> LogInAsync()
 		{
 			IsLoggedIn = false;
 			var request = CreateRequest("/auth/login/", Method.POST, AuthInfo.FromSstSettings(_settings));

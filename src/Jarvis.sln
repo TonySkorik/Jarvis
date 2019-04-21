@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.Manager", "Jarvis.Ma
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.TestApp", "Jarvis.TestApp\Jarvis.TestApp.csproj", "{56AEDD5E-6022-4F9D-A7A7-E7F4C3836607}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jarvis.SstCloud.Client", "Jarvis.SstCloud.Client\Jarvis.SstCloud.Client.csproj", "{5BD54A55-1D53-4C35-B763-2235236230C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.SstCloud.Client", "Jarvis.SstCloud.Client\Jarvis.SstCloud.Client.csproj", "{5BD54A55-1D53-4C35-B763-2235236230C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jarvis.SstCloud.Core", "Jarvis.SstCloud.Core\Jarvis.SstCloud.Core.csproj", "{5B41629A-4CE5-4A5C-8995-9AEE5A61034C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.SstCloud.Core", "Jarvis.SstCloud.Core\Jarvis.SstCloud.Core.csproj", "{5B41629A-4CE5-4A5C-8995-9AEE5A61034C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00. Libraries", "00. Libraries", "{1AAC1F9B-50BF-4C52-B32C-C619D600C1F8}"
 EndProject
@@ -17,7 +17,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. Core", "0. Core", "{2097
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. SstCloud", "1. SstCloud", "{1B4049B3-2102-4561-8DFB-2D01105D07C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jarvis.Core", "Jarvis.Core\Jarvis.Core.csproj", "{E1C7F13A-E08B-4119-B749-68AE69E3D8DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.Core", "Jarvis.Core\Jarvis.Core.csproj", "{E1C7F13A-E08B-4119-B749-68AE69E3D8DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{25FDB0F7-AB10-4501-863C-0F9EFB9C1058}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jarvis.SstCloud.Client.Tests", "Jarvis.SstCloud.Client.Tests\Jarvis.SstCloud.Client.Tests.csproj", "{6F91F90D-1792-4966-A481-99EC54A1A3B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,10 @@ Global
 		{E1C7F13A-E08B-4119-B749-68AE69E3D8DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1C7F13A-E08B-4119-B749-68AE69E3D8DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1C7F13A-E08B-4119-B749-68AE69E3D8DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F91F90D-1792-4966-A481-99EC54A1A3B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F91F90D-1792-4966-A481-99EC54A1A3B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F91F90D-1792-4966-A481-99EC54A1A3B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F91F90D-1792-4966-A481-99EC54A1A3B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +63,8 @@ Global
 		{2097737A-CCA8-44A4-914A-A771685C3AEC} = {1AAC1F9B-50BF-4C52-B32C-C619D600C1F8}
 		{1B4049B3-2102-4561-8DFB-2D01105D07C1} = {1AAC1F9B-50BF-4C52-B32C-C619D600C1F8}
 		{E1C7F13A-E08B-4119-B749-68AE69E3D8DE} = {2097737A-CCA8-44A4-914A-A771685C3AEC}
+		{25FDB0F7-AB10-4501-863C-0F9EFB9C1058} = {1B4049B3-2102-4561-8DFB-2D01105D07C1}
+		{6F91F90D-1792-4966-A481-99EC54A1A3B6} = {25FDB0F7-AB10-4501-863C-0F9EFB9C1058}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA6532BB-D075-45B5-B4AA-39D58682FBDD}

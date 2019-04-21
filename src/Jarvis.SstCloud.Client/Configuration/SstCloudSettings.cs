@@ -7,9 +7,16 @@ namespace Jarvis.SstCloud.Client.Configuration
 {
 	public class SstCloudSettings
 	{
-		public string Email { set; get; }
-		public string Password { get; set; }
-		public string Uri { get; set; }
+		public string Email { get; }
+		public string Password { get; }
+		public string Uri { get; }
 		public TimeSpan Timeout { set; get; }
+
+		public SstCloudSettings(string uri, string email, string password)
+		{
+			Uri = uri;
+			Email = email;
+			Password = password;
+		}
 	}
 }
