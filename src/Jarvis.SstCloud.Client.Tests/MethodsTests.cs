@@ -12,7 +12,7 @@ namespace Jarvis.SstCloud.Client.Tests
 {
 	public class MethodsTests
 	{
-		private SstCloudClient _client;
+		private readonly SstCloudClient _client;
 
 		public MethodsTests()
 		{

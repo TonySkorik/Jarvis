@@ -16,4 +16,10 @@
     <ProjectReference Include="..\Jarvis.SstCloud.Client\Jarvis.SstCloud.Client.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Credentials.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
