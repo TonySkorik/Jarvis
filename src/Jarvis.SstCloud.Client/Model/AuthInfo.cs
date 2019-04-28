@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Jarvis.SstCloud.Client.Model
 {
-	internal struct AuthInfo
+	internal class AuthInfo
 	{
 		[JsonProperty("username")]
 		public string UserName => Email;

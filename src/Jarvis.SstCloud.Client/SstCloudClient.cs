@@ -52,22 +52,69 @@ namespace Jarvis.SstCloud.Client
 		{
 			IsLoggedIn = false;
 			var request = CreateRequest("/auth/login/", Method.POST, AuthInfo.FromSstSettings(_settings));
-			var response = await _client.ExecuteTaskAsync(request, _cancellationToken);
-			ExtractCsrfTokenAndSessionId(response);
-			if (response.StatusCode == HttpStatusCode.OK)
-			{
-				_key = response.GetResponseBodyProperty<string>("key");
-				IsLoggedIn = true;
-			}
+			var response = await GetResponse(request);
 
-			// TODO: log error
+			_key = response.GetResponseBodyProperty<string>("key");
+			IsLoggedIn = true;
+			
 			return IsLoggedIn;
+		}
+
+		public async Task<UserInfo> GetUserInfo()
+		{
+			var request = CreateRequest("/auth/login/", Method.GET);
+			var response = await GetResponse(request);
+			return response.GetResponseBodyAsObject<UserInfo>();
+		}
+
+		public async Task<List<HouseInfo>> GetHouses()
+		{
+			var request = CreateRequest("/houses/", Method.GET);
+			var response = await GetResponse(request);
+			return response.GetResponseBodyAsObject<List<HouseInfo>>();
+		}
+
+		public async Task<HouseInfo> GetHouse(int houseId)
+		{
+			var request = CreateRequest($"/houses/{houseId}/", Method.GET);
+			var response = await GetResponse(request);
+			return response.GetResponseBodyAsObject<HouseInfo>();
+		}
+
+		public async Task<List<WaterCounterInfo>> GetHouseWaterCounters(int houseId)
+		{
+			var request = CreateRequest($"/houses/{houseId}/counters", Method.GET);
+			var response = await GetResponse(request);
+			return response.GetResponseBodyAsObject<List<WaterCounterInfo>>();
 		}
 
 		#endregion
 
 		#region Service methods
 
+		private async Task<IRestResponse> GetResponse(RestRequest request)
+		{
+			var response = await _client.ExecuteTaskAsync(request, _cancellationToken);
+			ExtractCsrfTokenAndSessionId(response);
+			if (response.StatusCode != HttpStatusCode.OK)
+			{
+				// try log in and retry
+				if (await LogInAsync())
+				{
+					request.UpdateCsrfToken(_csrfToken);
+					response = await _client.ExecuteTaskAsync(request, _cancellationToken);
+				}
+			}
+
+			if (response.StatusCode != HttpStatusCode.OK)
+			{
+				//TODO: log an error
+				//TODO: throw!
+			}
+
+			return response;
+		}
+		
 		private RestRequest CreateRequest(string resource, Method method, object body = null, params (string name, object value)[] parameters)
 		{
 			RestRequest request = new RestRequest(resource)
@@ -77,7 +124,7 @@ namespace Jarvis.SstCloud.Client
 
 			request.AddHeader("Content-Type", "application/json");
 			request.AddHeader("Accept", "application/json");
-			request.AddHeader("X-CSRFToken", _csrfToken);
+			request.UpdateCsrfToken(_csrfToken);
 
 			if (body != null)
 			{
