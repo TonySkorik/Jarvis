@@ -1,5 +1,7 @@
 using System;
+using System.Diagnostics.Contracts;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,6 +33,28 @@ namespace Jarvis.SstCloud.Client.Tests
 		{
 			var loggedIn = await _client.LogInAsync();
 			loggedIn.Should().BeTrue();
+		}
+
+		[Fact]
+		public async Task TestGetHouses()
+		{
+			await _client.LogInAsync();
+			var houses = await _client.GetHouses();
+			houses.Count.Should().Be(1);
+		}
+
+		[Fact]
+		public async Task TestGetWaterCounters()
+		{
+			await _client.LogInAsync();
+			var house = (await _client.GetHouses()).First();
+			var houseId = house.Id;
+			var countersInfo = await _client.GetHouseWaterCounters(houseId);
+
+			countersInfo.Should().NotBeNullOrEmpty();
+			countersInfo.Count.Should().Be(2);
+			countersInfo.First().Value.Should().BeGreaterThan(0);
+			countersInfo.Last().Value.Should().BeGreaterThan(0);
 		}
 	}
 }

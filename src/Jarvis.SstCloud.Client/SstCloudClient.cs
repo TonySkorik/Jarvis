@@ -52,7 +52,8 @@ namespace Jarvis.SstCloud.Client
 		{
 			IsLoggedIn = false;
 			var request = CreateRequest("/auth/login/", Method.POST, AuthInfo.FromSstSettings(_settings));
-			var response = await GetResponse(request);
+			var response = await _client.ExecuteTaskAsync(request, _cancellationToken);
+			ExtractCsrfTokenAndSessionId(response);
 
 			_key = response.GetResponseBodyProperty<string>("key");
 			IsLoggedIn = true;
@@ -71,7 +72,7 @@ namespace Jarvis.SstCloud.Client
 		{
 			var request = CreateRequest("/houses/", Method.GET);
 			var response = await GetResponse(request);
-			return response.GetResponseBodyAsObject<List<HouseInfo>>();
+			return response.GetResponseBodyAsObjectList<HouseInfo>();
 		}
 
 		public async Task<HouseInfo> GetHouse(int houseId)
@@ -85,7 +86,7 @@ namespace Jarvis.SstCloud.Client
 		{
 			var request = CreateRequest($"/houses/{houseId}/counters", Method.GET);
 			var response = await GetResponse(request);
-			return response.GetResponseBodyAsObject<List<WaterCounterInfo>>();
+			return response.GetResponseBodyAsObjectList<WaterCounterInfo>();
 		}
 
 		#endregion
@@ -96,16 +97,6 @@ namespace Jarvis.SstCloud.Client
 		{
 			var response = await _client.ExecuteTaskAsync(request, _cancellationToken);
 			ExtractCsrfTokenAndSessionId(response);
-			if (response.StatusCode != HttpStatusCode.OK)
-			{
-				// try log in and retry
-				if (await LogInAsync())
-				{
-					request.UpdateCsrfToken(_csrfToken);
-					response = await _client.ExecuteTaskAsync(request, _cancellationToken);
-				}
-			}
-
 			if (response.StatusCode != HttpStatusCode.OK)
 			{
 				//TODO: log an error
@@ -122,13 +113,17 @@ namespace Jarvis.SstCloud.Client
 				Method = method
 			};
 
+			request.AddCookie("csrftoken", _csrfToken);
+			request.AddCookie("sessionid", _sessionId);
+
 			request.AddHeader("Content-Type", "application/json");
 			request.AddHeader("Accept", "application/json");
 			request.UpdateCsrfToken(_csrfToken);
-
+			
 			if (body != null)
 			{
-				request.AddJsonBody(body);
+				var t = JsonConvert.SerializeObject(body);
+				request.AddJsonBody(t);
 			}
 
 			if (parameters != null)
