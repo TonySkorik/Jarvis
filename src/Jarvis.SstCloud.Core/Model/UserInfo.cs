@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace Jarvis.SstCloud.Client.Model
+namespace Jarvis.SstCloud.Core.Model
 {
 	/// <summary>
 	/// Represents SST cloud user information

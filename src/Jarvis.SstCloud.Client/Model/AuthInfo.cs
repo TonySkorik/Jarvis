@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Jarvis.SstCloud.Client.Configuration;
+﻿using Jarvis.SstCloud.Client.Configuration;
 using Newtonsoft.Json;
 
 namespace Jarvis.SstCloud.Client.Model
@@ -17,8 +14,8 @@ namespace Jarvis.SstCloud.Client.Model
 
 		public AuthInfo(string email, string password) 
 			=> (Email, Password) = (email, password);
-
-		public static AuthInfo FromSstSettings(SstCloudSettings settings)
+		
+		public static object FromSstSettings(SstCloudSettings settings)
 		{
 			return new AuthInfo(settings.Email, settings.Password);
 		}

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace Jarvis.SstCloud.Client.Model
+namespace Jarvis.SstCloud.Core.Model
 {
 	public class WaterCounterInfo : IdentifiableValue
 	{
@@ -35,6 +32,7 @@ namespace Jarvis.SstCloud.Client.Model
 		  }
 		]
 		*/
+
 		[JsonProperty("name")]
 		public string Name { get; set; }
 
@@ -52,5 +50,8 @@ namespace Jarvis.SstCloud.Client.Model
 
 		[JsonProperty("value")]
 		public int Value { get; set; }
+
+		[JsonProperty("prev_value")]
+		public int PreviousValue { get; set; }
 	}
 }

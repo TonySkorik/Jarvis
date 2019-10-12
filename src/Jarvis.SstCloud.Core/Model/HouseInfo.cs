@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
 
-namespace Jarvis.SstCloud.Client.Model
+namespace Jarvis.SstCloud.Core.Model
 {
 	public class HouseInfo : IdentifiableValue
 	{

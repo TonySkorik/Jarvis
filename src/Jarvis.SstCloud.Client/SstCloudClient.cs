@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Jarvis.SstCloud.Client.Configuration;
 using Jarvis.SstCloud.Client.Helpers;
 using Jarvis.SstCloud.Client.Model;
+using Jarvis.SstCloud.Core.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -61,28 +62,28 @@ namespace Jarvis.SstCloud.Client
 			return IsLoggedIn;
 		}
 
-		public async Task<UserInfo> GetUserInfo()
+		public async Task<UserInfo> GetUserInfoAsync()
 		{
 			var request = CreateRequest("/auth/login/", Method.GET);
 			var response = await GetResponse(request);
 			return response.GetResponseBodyAsObject<UserInfo>();
 		}
 
-		public async Task<List<HouseInfo>> GetHouses()
+		public async Task<List<HouseInfo>> GetHousesAsync()
 		{
 			var request = CreateRequest("/houses/", Method.GET);
 			var response = await GetResponse(request);
 			return response.GetResponseBodyAsObjectList<HouseInfo>();
 		}
 
-		public async Task<HouseInfo> GetHouse(int houseId)
+		public async Task<HouseInfo> GetHouseAsync(int houseId)
 		{
 			var request = CreateRequest($"/houses/{houseId}/", Method.GET);
 			var response = await GetResponse(request);
 			return response.GetResponseBodyAsObject<HouseInfo>();
 		}
 
-		public async Task<List<WaterCounterInfo>> GetHouseWaterCounters(int houseId)
+		public async Task<List<WaterCounterInfo>> GetHouseWaterCountersAsync(int houseId)
 		{
 			var request = CreateRequest($"/houses/{houseId}/counters", Method.GET);
 			var response = await GetResponse(request);
