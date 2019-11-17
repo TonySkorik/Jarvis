@@ -1,0 +1,10 @@
+﻿Добрый день.
+
+ГВС: %hot_water_counter_value%
+ХВС: %cold_water_counter_value%
+
+Актуально на %date_data_valid_on%.
+Спасибо!
+
+С уважением,
+Антон Скорик

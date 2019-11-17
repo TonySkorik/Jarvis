@@ -1,13 +1,19 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Jarvis.Service.Configuration;
+using Jarvis.Service.Infrastructure.Jobs;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Quartz;
+using Quartz.Impl;
+using Quartz.Logging;
 using Serilog;
 
 namespace Jarvis.Service.Infrastructure
@@ -16,9 +22,12 @@ namespace Jarvis.Service.Infrastructure
 	{
 		private readonly string[] _args;
 		private Task _webServiceTask;
-		private WaterChecker _waterChecker;
 		private readonly CancellationTokenSource _killswitch;
 		private readonly AppSettings _config;
+		private readonly Task _initialized;
+
+		public ILogger Logger { get; }
+		public IScheduler Scheduler { get; private set; }
 
 		public JarvisService(string[] args)
 		{
@@ -31,17 +40,54 @@ namespace Jarvis.Service.Infrastructure
 				.WriteTo.File(_config.Logging.LogFilePath, _config.Logging.EventLevel)
 				.CreateLogger();
 
-			_args = args;
+			Logger = Log.Logger;
+
 			_killswitch = new CancellationTokenSource();
-			_waterChecker = new WaterChecker(
-				_config.Settings.WaterCountersCheckInterval,
-				_config,
-				_killswitch.Token,
-				Log.Logger);
+			_args = args;
+			
+			_initialized = InitilizeSheduler(_killswitch.Token);
 		}
 
-		public void Start()
+		private async Task InitilizeSheduler(CancellationToken cancellationToken)
 		{
+			NameValueCollection props = new NameValueCollection
+			{
+				{ "quartz.serializer.type", "binary" },
+				{ "quartz.scheduler.instanceName", "MyScheduler" },
+				{ "quartz.jobStore.type", "Quartz.Simpl.RAMJobStore, Quartz" },
+				{ "quartz.threadPool.threadCount", "2" }
+			};
+			StdSchedulerFactory schedulerFactory = new StdSchedulerFactory(props);
+			Scheduler = await schedulerFactory.GetScheduler(cancellationToken);
+			await Scheduler.Start(cancellationToken);
+
+			IJobDetail job = JobBuilder.Create<WaterCheckerJob>()
+				.SetJobData(
+					new JobDataMap(
+						(IDictionary<string, object>) new Dictionary<string, object>()
+						{
+							{"Settings", _config},
+							{"CancellationToken", _killswitch.Token},
+							{"Logger", Log.Logger},
+							{"EmailSender", new EmailSender(_config)}
+						}))
+				.WithDescription("Monthly Jarvis water counter check and send job.")
+				.WithIdentity("Jarvis.WaterCounterCheck", "Jarvis.Checks")
+				.Build();
+
+			ITrigger trigger = TriggerBuilder.Create()
+				.WithIdentity("Jarvis.MonthlyTrigger", "Jarvis.Checks")
+				.WithDescription("Monthly Jarvis water counter check and send trigger.")
+				.StartNow()
+				.WithCalendarIntervalSchedule(x=>x.WithIntervalInMonths(1))
+				.Build();
+
+			await Scheduler.ScheduleJob(job, trigger, cancellationToken);
+		}
+
+		public async void Start()
+		{
+			await _initialized;
 			_webServiceTask = CreateWebHostBuilder(_args)
 				.Build().RunAsync(_killswitch.Token);
 		}

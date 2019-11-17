@@ -11,14 +11,17 @@ namespace Jarvis.Service
 	{
 		public static void Main(string[] args)
 		{
+			var jarvisService = new JarvisService(args);
+
 			var rc = HostFactory.Run(x =>
 			{
 				x.Service<JarvisService>(s =>
 				{
-					s.ConstructUsing(name => new JarvisService(args));
+					s.ConstructUsing(name => jarvisService);
 					s.WhenStarted(tc => tc.Start());
 					s.WhenStopped(tc => tc.Stop());
 				});
+				x.UseSerilog();
 				x.RunAsLocalSystem();
 
 				x.SetDescription("Jarvis background service");

@@ -87,7 +87,9 @@ namespace Jarvis.SstCloud.Client
 		{
 			var request = CreateRequest($"/houses/{houseId}/counters", Method.GET);
 			var response = await GetResponse(request);
-			return response.GetResponseBodyAsObjectList<WaterCounterInfo>();
+			var countersResult = response.GetResponseBodyAsObjectList<WaterCounterInfo>();
+
+			return countersResult;
 		}
 
 		#endregion
