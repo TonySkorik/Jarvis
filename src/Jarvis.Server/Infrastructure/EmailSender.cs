@@ -26,7 +26,7 @@ namespace Jarvis.Server.Infrastructure
 
 		public async Task SendStatisticsAsync(WaterCounterInfo hotWaterInfo, WaterCounterInfo coldWaterInfo)
 		{
-			var template = File.ReadAllText(_config.EmailSender.TemplatePath);
+			var template = await File.ReadAllTextAsync(_config.EmailSender.TemplatePath);
 			var letterBody = template
 				.Replace("%hot_water_counter_value%", (hotWaterInfo.Value / 1000D).ToString(CultureInfo.CurrentCulture))
 				.Replace("%cold_water_counter_value%", (coldWaterInfo.Value / 1000D).ToString(CultureInfo.CurrentCulture))

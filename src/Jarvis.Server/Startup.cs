@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
+using Jarvis.Server.Configuration;
+using Jarvis.SstCloud.Client;
+using Jarvis.SstCloud.Client.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +30,22 @@ namespace Jarvis.Server
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
+		}
+		
+		// ConfigureContainer is where you can register things directly
+		// with Autofac. This runs after ConfigureServices so the things
+		// here will override registrations made in ConfigureServices.
+		// Don't build the container; that gets done for you by the factory.
+		public void ConfigureContainer(ContainerBuilder builder)
+		{
+			//var settings = Configuration.Get<AppSettings>();
+			//builder.RegisterInstance(settings)
+			//	.SingleInstance();
+			//builder.RegisterType<SstCloudSettingsProvider>()
+			//	.As<ISstCloudSettingsProvider>()
+			//	.SingleInstance();
+			//builder.RegisterType<SstCloudClient>()
+			//	.InstancePerDependency();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

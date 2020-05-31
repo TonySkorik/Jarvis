@@ -18,14 +18,8 @@ namespace Jarvis.SstCloud.Client.Tests
 
 		public MethodsTests()
 		{
-			var credentials = JObject.Parse(File.ReadAllText("Credentials.json"));
-			_client = new SstCloudClient(
-				new SstCloudSettings(
-					"http://api.sst-cloud.com/",
-					credentials["Email"].Value<string>(),
-					credentials["Password"].Value<string>()),
-				CancellationToken.None,
-				null);
+			var provider = new DummySstCloudSettingsProvider();
+			_client = new SstCloudClient(provider, CancellationToken.None);
 		}
 
 		[Fact]

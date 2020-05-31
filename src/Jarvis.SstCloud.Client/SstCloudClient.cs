@@ -38,9 +38,9 @@ namespace Jarvis.SstCloud.Client
 
 		#region Ctor
 
-		public SstCloudClient(SstCloudSettings settings, in CancellationToken cancellationToken, ILogger logger)
+		public SstCloudClient(ISstCloudSettingsProvider settingsProvider, in CancellationToken cancellationToken)
 		{
-			_settings = settings;
+			_settings = settingsProvider.GetSettings();
 			_cancellationToken = cancellationToken;
 			_client = new RestClient(_settings.Uri);
 		}
@@ -53,7 +53,7 @@ namespace Jarvis.SstCloud.Client
 		{
 			IsLoggedIn = false;
 			var request = CreateRequest("/auth/login/", Method.POST, AuthInfo.FromSstSettings(_settings));
-			var response = await _client.ExecuteTaskAsync(request, _cancellationToken);
+			var response = await _client.ExecuteAsync(request, _cancellationToken);
 			ExtractCsrfTokenAndSessionId(response);
 
 			_key = response.GetResponseBodyProperty<string>("key");
@@ -98,7 +98,7 @@ namespace Jarvis.SstCloud.Client
 
 		private async Task<IRestResponse> GetResponse(RestRequest request)
 		{
-			var response = await _client.ExecuteTaskAsync(request, _cancellationToken);
+			var response = await _client.ExecuteAsync(request, _cancellationToken);
 			ExtractCsrfTokenAndSessionId(response);
 			if (response.StatusCode != HttpStatusCode.OK)
 			{
