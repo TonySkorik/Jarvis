@@ -25,11 +25,11 @@ namespace Jarvis.Server.Infrastructure.Services
 
 			IJobDetail job = JobBuilder.Create<WaterCheckerJob>()
 				.WithDescription("Monthly Jarvis water counter check and send job.")
-				.WithIdentity("Jarvis.WaterCounterCheck", "Jarvis.Checks")
+				.WithIdentity("Jarvis.Checks.WaterCounterCheck", "Jarvis.Checks")
 				.Build();
 
 			ITrigger trigger = TriggerBuilder.Create()
-				.WithIdentity("Jarvis.MonthlyTrigger", "Jarvis.Checks.Triggers")
+				.WithIdentity("Jarvis.Checks.Triggers.MonthlyTrigger", "Jarvis.Checks.Triggers")
 				.WithDescription("Monthly (every month at 20th dat at 13:00) Jarvis water counter check and send trigger.")
 				.WithCronSchedule("0 0 13 20 1/1 ? *")
 				.StartNow()

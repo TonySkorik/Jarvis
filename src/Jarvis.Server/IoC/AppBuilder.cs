@@ -32,16 +32,18 @@ namespace Jarvis.Server.IoC
 			containerBuilder.RegisterType<EmailSender>()
 				.AsSelf()
 				.InstancePerDependency();
-
-			NameValueCollection props = new NameValueCollection
-			{
-				{ "quartz.serializer.type", "binary" },
-				{ "quartz.scheduler.instanceName", "JarvisScheduler" },
-				{ "quartz.jobStore.type", "Quartz.Simpl.RAMJobStore, Quartz" },
-				{ "quartz.threadPool.threadCount", "16" }
-			};
 			
-			containerBuilder.RegisterInstance(new StdSchedulerFactory(props))
+			//NameValueCollection props = new NameValueCollection
+			//{
+			//	{ "quartz.serializer.type", "binary" },
+			//	{ "quartz.scheduler.instanceName", "JarvisScheduler" },
+			//	{ "quartz.jobStore.type", "Quartz.Simpl.RAMJobStore, Quartz" },
+			//	{ "quartz.threadPool.threadCount", "16" }
+			//};
+
+			var quartzProperties = settings.Quartz.ToProperties();
+
+			containerBuilder.RegisterInstance(new StdSchedulerFactory(quartzProperties))
 				.As<ISchedulerFactory>()
 				.SingleInstance();
 

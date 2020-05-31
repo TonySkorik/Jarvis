@@ -17,7 +17,7 @@ namespace Jarvis.Server.Configuration
 
 		SstCloudSettings ISstCloudSettingsProvider.GetSettings()
 		{
-			return new SstCloudSettings(_settings.SstCloud.Url, _settings.SstCloud.Login, _settings.SstCloud.Password);
+			return new SstCloudSettings(_settings.MainSettings.SstCloud.Url, _settings.MainSettings.SstCloud.Login, _settings.MainSettings.SstCloud.Password);
 		}
 	}
 }

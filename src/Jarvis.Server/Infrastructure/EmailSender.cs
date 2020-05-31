@@ -12,21 +12,21 @@ namespace Jarvis.Server.Infrastructure
 {
 	public class EmailSender
 	{
-		private readonly AppSettings _config;
-		private readonly SmtpClient _smtp;
+		private readonly AppSettings _appSettings;
+		private readonly SmtpClient _smtpClient;
 
-		public EmailSender(AppSettings config)
+		public EmailSender(AppSettings appSettings)
 		{
-			_config = config;
-			_smtp = new SmtpClient(config.EmailSender.Host, config.EmailSender.Port)
+			_appSettings = appSettings;
+			_smtpClient = new SmtpClient(appSettings.MainSettings.EmailSender.Host, appSettings.MainSettings.EmailSender.Port)
 			{
-				Credentials = new NetworkCredential(config.EmailSender.Login, config.EmailSender.Password)
+				Credentials = new NetworkCredential(appSettings.MainSettings.EmailSender.Login, appSettings.MainSettings.EmailSender.Password)
 			};
 		}
 
 		public async Task SendStatisticsAsync(WaterCounterInfo hotWaterInfo, WaterCounterInfo coldWaterInfo)
 		{
-			var template = await File.ReadAllTextAsync(_config.EmailSender.TemplatePath);
+			var template = await File.ReadAllTextAsync(_appSettings.MainSettings.EmailSender.TemplatePath);
 			var letterBody = template
 				.Replace("%hot_water_counter_value%", (hotWaterInfo.Value / 1000D).ToString(CultureInfo.CurrentCulture))
 				.Replace("%cold_water_counter_value%", (coldWaterInfo.Value / 1000D).ToString(CultureInfo.CurrentCulture))
@@ -35,14 +35,14 @@ namespace Jarvis.Server.Infrastructure
 			var message = new MailMessage()
 			{
 				Body =  letterBody,
-				From = new MailAddress(_config.EmailSender.From),
-				Subject =  _config.EmailSender.Subject
+				From = new MailAddress(_appSettings.MainSettings.EmailSender.From),
+				Subject =  _appSettings.MainSettings.EmailSender.Subject
 			};
 
-			SetMailAddresses(message.To, _config.EmailSender.To);
-			SetMailAddresses(message.Bcc, _config.EmailSender.Bcc);
+			SetMailAddresses(message.To, _appSettings.MainSettings.EmailSender.To);
+			SetMailAddresses(message.Bcc, _appSettings.MainSettings.EmailSender.Bcc);
 			
-			await _smtp.SendMailAsync(message);
+			await _smtpClient.SendMailAsync(message);
 		}
 
 		private void SetMailAddresses(
