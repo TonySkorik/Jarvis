@@ -18,15 +18,15 @@ namespace Jarvis.Server.Infrastructure
 		public EmailSender(AppSettings appSettings)
 		{
 			_appSettings = appSettings;
-			_smtpClient = new SmtpClient(appSettings.MainSettings.EmailSender.Host, appSettings.MainSettings.EmailSender.Port)
+			_smtpClient = new SmtpClient(appSettings.Application.EmailSender.Host, appSettings.Application.EmailSender.Port)
 			{
-				Credentials = new NetworkCredential(appSettings.MainSettings.EmailSender.Login, appSettings.MainSettings.EmailSender.Password)
+				Credentials = new NetworkCredential(appSettings.Application.EmailSender.Login, appSettings.Application.EmailSender.Password)
 			};
 		}
 
 		public async Task SendStatisticsAsync(WaterCounterInfo hotWaterInfo, WaterCounterInfo coldWaterInfo)
 		{
-			var template = await File.ReadAllTextAsync(_appSettings.MainSettings.EmailSender.TemplatePath);
+			var template = await File.ReadAllTextAsync(_appSettings.Application.EmailSender.TemplatePath);
 			var letterBody = template
 				.Replace("%hot_water_counter_value%", (hotWaterInfo.Value / 1000D).ToString(CultureInfo.CurrentCulture))
 				.Replace("%cold_water_counter_value%", (coldWaterInfo.Value / 1000D).ToString(CultureInfo.CurrentCulture))
@@ -35,12 +35,12 @@ namespace Jarvis.Server.Infrastructure
 			var message = new MailMessage()
 			{
 				Body =  letterBody,
-				From = new MailAddress(_appSettings.MainSettings.EmailSender.From),
-				Subject =  _appSettings.MainSettings.EmailSender.Subject
+				From = new MailAddress(_appSettings.Application.EmailSender.From),
+				Subject =  _appSettings.Application.EmailSender.Subject
 			};
 
-			SetMailAddresses(message.To, _appSettings.MainSettings.EmailSender.To);
-			SetMailAddresses(message.Bcc, _appSettings.MainSettings.EmailSender.Bcc);
+			SetMailAddresses(message.To, _appSettings.Application.EmailSender.To);
+			SetMailAddresses(message.Bcc, _appSettings.Application.EmailSender.Bcc);
 			
 			await _smtpClient.SendMailAsync(message);
 		}

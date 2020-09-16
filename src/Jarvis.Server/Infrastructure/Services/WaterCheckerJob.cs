@@ -25,7 +25,7 @@ namespace Jarvis.Server.Infrastructure.Services
 		public async Task Execute(IJobExecutionContext context)
 		{
 			var authToken = await _client.LogInAsync();
-			var results = await _client.GetHouseWaterCountersAsync(_appSetings.MainSettings.SstCloud.HouseId, authToken);
+			var results = await _client.GetHouseWaterCountersAsync(_appSetings.Application.SstCloud.HouseId, authToken);
 			await _emailSender.SendStatisticsAsync(
 				results.First(i => i.IsHotWaterCounter),
 				results.First(i => !i.IsHotWaterCounter));

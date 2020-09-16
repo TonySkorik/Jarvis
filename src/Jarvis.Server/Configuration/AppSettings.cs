@@ -8,7 +8,7 @@ namespace Jarvis.Server.Configuration
 {
 	public partial class AppSettings
 	{
-		public Settings MainSettings { set; get; }
+		public Settings Application { set; get; }
 		public QuartzSettings Quartz { set; get; }
 	}
 }
