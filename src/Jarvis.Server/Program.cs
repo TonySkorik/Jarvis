@@ -55,7 +55,7 @@ namespace Jarvis.Server
 						(cb) => AppBuilder.BuildContainer(cb, cntxt)
 					)
 				)
-				.ConfigureServices(s=>s.AddHostedService<WaterCheckerService>())
+				.ConfigureServices(s => s.AddHostedService<WaterCheckerService>())
 				.ConfigureWebHostDefaults(
 					webBuilder =>
 					{

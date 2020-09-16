@@ -37,8 +37,8 @@ namespace Jarvis.Server.Infrastructure.Services
 				.WithDescription("Monthly (every month at 20th day at 13:00) Jarvis water counter check and send trigger.")
 				//.WithCronSchedule("0 0 13 20 1/1 ? *")
 				.ForJob(job)
-				.WithCronSchedule("0/10 0 0 ? * * *", b=> b.InTimeZone(TimeZoneInfo.Local).WithMisfireHandlingInstructionFireAndProceed().Build()) // every 10 seconds - debug purposes only
 				.StartNow()
+				.WithCronSchedule("0/10 0 0 ? * * *", b=> b.InTimeZone(TimeZoneInfo.Local).WithMisfireHandlingInstructionFireAndProceed()) // every 10 seconds - debug purposes only
 				.Build();
 
 			var scheduleResult = await _scheduler.ScheduleJob(trigger, cancellationToken);
