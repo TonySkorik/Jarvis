@@ -31,7 +31,8 @@ namespace Jarvis.Server.Infrastructure.Services
 			ITrigger trigger = TriggerBuilder.Create()
 				.WithIdentity("Jarvis.Checks.Triggers.MonthlyTrigger", "Jarvis.Checks.Triggers")
 				.WithDescription("Monthly (every month at 20th dat at 13:00) Jarvis water counter check and send trigger.")
-				.WithCronSchedule("0 0 13 20 1/1 ? *")
+				//.WithCronSchedule("0 0 13 20 1/1 ? *")
+				.WithCronSchedule("0 0/1 0 ? * * *") // every minute - debug purposes only
 				.StartNow()
 				.Build();
 
@@ -48,8 +49,15 @@ namespace Jarvis.Server.Infrastructure.Services
 
 		public void Dispose()
 		{
-			_scheduler.Clear().GetAwaiter().GetResult();
-			_scheduler.Shutdown();
+			try
+			{
+				_scheduler.Clear().GetAwaiter().GetResult();
+				_scheduler.Shutdown();
+			}
+			catch
+			{
+				// ignore
+			}
 		}
 	}
 }

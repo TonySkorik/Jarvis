@@ -30,7 +30,7 @@ namespace Jarvis.Server.Configuration
 					//["quartz.plugin.jobInitializer.type"] = Plugin?.JobInitializer?.Type,
 					//["quartz.plugin.jobInitializer.fileNames"] = Plugin?.JobInitializer?.FileNames
 				};
-
+				
 				return properties;
 			}
 		}

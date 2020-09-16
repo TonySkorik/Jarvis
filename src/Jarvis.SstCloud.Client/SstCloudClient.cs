@@ -24,16 +24,6 @@ namespace Jarvis.SstCloud.Client
 		private readonly CancellationToken _cancellationToken;
 		private readonly RestClient _client;
 
-		private string _key;
-		private string _csrfToken;
-		private string _sessionId; 
-
-		#endregion
-
-		#region Props
-
-		public bool IsLoggedIn { private set; get; }
-
 		#endregion
 
 		#region Ctor
@@ -49,43 +39,39 @@ namespace Jarvis.SstCloud.Client
 
 		#region API Methods
 
-		public async Task<bool> LogInAsync()
+		public async Task<string> LogInAsync()
 		{
-			IsLoggedIn = false;
-			var request = CreateRequest("/auth/login/", Method.POST, AuthInfo.FromSstSettings(_settings));
+			var request = CreateRequest("/auth/login/", Method.POST, null, AuthInfo.FromSstSettings(_settings));
 			var response = await _client.ExecuteAsync(request, _cancellationToken);
-			ExtractCsrfTokenAndSessionId(response);
+			var key = response.GetResponseBodyProperty<string>("key");
 
-			_key = response.GetResponseBodyProperty<string>("key");
-			IsLoggedIn = true;
-			
-			return IsLoggedIn;
+			return key;
 		}
 
-		public async Task<UserInfo> GetUserInfoAsync()
+		public async Task<UserInfo> GetUserInfoAsync(string authToken)
 		{
-			var request = CreateRequest("/auth/login/", Method.GET);
+			var request = CreateRequest("/auth/login/", Method.GET, authToken);
 			var response = await GetResponse(request);
 			return response.GetResponseBodyAsObject<UserInfo>();
 		}
 
-		public async Task<List<HouseInfo>> GetHousesAsync()
+		public async Task<List<HouseInfo>> GetHousesAsync(string authToken)
 		{
-			var request = CreateRequest("/houses/", Method.GET);
+			var request = CreateRequest("/houses/", Method.GET, authToken);
 			var response = await GetResponse(request);
 			return response.GetResponseBodyAsObjectList<HouseInfo>();
 		}
 
-		public async Task<HouseInfo> GetHouseAsync(int houseId)
+		public async Task<HouseInfo> GetHouseAsync(int houseId, string authToken)
 		{
-			var request = CreateRequest($"/houses/{houseId}/", Method.GET);
+			var request = CreateRequest($"/houses/{houseId}/", Method.GET, authToken);
 			var response = await GetResponse(request);
 			return response.GetResponseBodyAsObject<HouseInfo>();
 		}
 
-		public async Task<List<WaterCounterInfo>> GetHouseWaterCountersAsync(int houseId)
+		public async Task<List<WaterCounterInfo>> GetHouseWaterCountersAsync(int houseId, string authToken)
 		{
-			var request = CreateRequest($"/houses/{houseId}/counters", Method.GET);
+			var request = CreateRequest($"/houses/{houseId}/counters", Method.GET, authToken);
 			var response = await GetResponse(request);
 			var countersResult = response.GetResponseBodyAsObjectList<WaterCounterInfo>();
 
@@ -99,7 +85,6 @@ namespace Jarvis.SstCloud.Client
 		private async Task<IRestResponse> GetResponse(RestRequest request)
 		{
 			var response = await _client.ExecuteAsync(request, _cancellationToken);
-			ExtractCsrfTokenAndSessionId(response);
 			if (response.StatusCode != HttpStatusCode.OK)
 			{
 				//TODO: log an error
@@ -108,21 +93,26 @@ namespace Jarvis.SstCloud.Client
 
 			return response;
 		}
-		
-		private RestRequest CreateRequest(string resource, Method method, object body = null, params (string name, object value)[] parameters)
+
+		private RestRequest CreateRequest(
+			string resource,
+			Method method,
+			string authToken,
+			object body = null,
+			params (string name, object value)[] parameters)
 		{
 			RestRequest request = new RestRequest(resource)
 			{
 				Method = method
 			};
 
-			request.AddCookie("csrftoken", _csrfToken);
-			request.AddCookie("sessionid", _sessionId);
-
 			request.AddHeader("Content-Type", "application/json");
 			request.AddHeader("Accept", "application/json");
-			request.UpdateCsrfToken(_csrfToken);
-			
+			if (!string.IsNullOrEmpty(authToken))
+			{
+				request.AddHeader("Authorization", $"Token {authToken}");
+			}
+
 			if (body != null)
 			{
 				var t = JsonConvert.SerializeObject(body);
@@ -139,16 +129,6 @@ namespace Jarvis.SstCloud.Client
 
 			return request;
 		}
-
-		private void ExtractCsrfTokenAndSessionId(IRestResponse response)
-		{
-			if (response?.Cookies != null
-				&& response.Cookies.Any())
-			{
-				_csrfToken = response.GetCookieValue("csrftoken");
-				_sessionId = response.GetCookieValue("sessionid");
-			}
-		} 
 
 		#endregion
 	}

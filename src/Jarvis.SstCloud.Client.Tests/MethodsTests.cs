@@ -26,24 +26,24 @@ namespace Jarvis.SstCloud.Client.Tests
 		public async Task TestLogin()
 		{
 			var loggedIn = await _client.LogInAsync();
-			loggedIn.Should().BeTrue();
+			loggedIn.Should().NotBeNullOrEmpty();
 		}
 
 		[Fact]
 		public async Task TestGetHouses()
 		{
-			await _client.LogInAsync();
-			var houses = await _client.GetHousesAsync();
+			var authToken = await _client.LogInAsync();
+			var houses = await _client.GetHousesAsync(authToken);
 			houses.Count.Should().Be(1);
 		}
 
 		[Fact]
 		public async Task TestGetWaterCounters()
 		{
-			await _client.LogInAsync();
-			var house = (await _client.GetHousesAsync()).First();
+			var authToken = await _client.LogInAsync();
+			var house = (await _client.GetHousesAsync(authToken)).First();
 			var houseId = house.Id;
-			var countersInfo = await _client.GetHouseWaterCountersAsync(houseId);
+			var countersInfo = await _client.GetHouseWaterCountersAsync(houseId, authToken);
 
 			countersInfo.Should().NotBeNullOrEmpty();
 			countersInfo.Count.Should().Be(2);
