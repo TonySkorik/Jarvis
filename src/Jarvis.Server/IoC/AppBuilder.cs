@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Jarvis.Server.Configuration;
+using Jarvis.Server.Diagnostics;
 using Jarvis.Server.Infrastructure;
 using Jarvis.Server.Infrastructure.Services;
 using Jarvis.SstCloud.Client;
@@ -13,7 +14,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Quartz;
 using Quartz.Impl;
+using Quartz.Logging;
 using Serilog;
+using Serilog.Extensions.Logging;
 
 namespace Jarvis.Server.IoC
 {
@@ -42,21 +45,24 @@ namespace Jarvis.Server.IoC
 			//};
 
 			var quartzProperties = settings.Quartz.ToProperties();
-
+			
 			containerBuilder.RegisterInstance(new StdSchedulerFactory(quartzProperties))
 				.As<ISchedulerFactory>()
 				.SingleInstance();
 
-			containerBuilder.RegisterType<WaterCheckerJob>()
-				.As<IJob>()
-				.SingleInstance();
+			//containerBuilder.RegisterType<WaterCheckerJob>()
+			//	.As<IJob>()
+			//	.AsSelf()
+			//	.SingleInstance();
 		}
 
 		public static void BuildLogger(
 			HostBuilderContext context,
 			LoggerConfiguration loggerConfiguration)
 		{
-			loggerConfiguration.ReadFrom.Configuration(context.Configuration)
+			loggerConfiguration.ReadFrom.Configuration(context.Configuration, "Application")
+				.WriteTo.Console()
+				// TODO: write to file
 				.Enrich.WithProperty("ApplicationName", typeof(Program).Assembly.GetName().Name)
 				.Enrich.WithProperty("Environment", context.HostingEnvironment);
 		}

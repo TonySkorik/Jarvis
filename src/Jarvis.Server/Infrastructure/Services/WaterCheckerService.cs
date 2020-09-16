@@ -22,23 +22,30 @@ namespace Jarvis.Server.Infrastructure.Services
 		public async Task StartAsync(CancellationToken cancellationToken)
 		{
 			_scheduler ??= await _schedulerFactory.GetScheduler(cancellationToken);
+			await _scheduler.Start(cancellationToken);
 
 			IJobDetail job = JobBuilder.Create<WaterCheckerJob>()
 				.WithDescription("Monthly Jarvis water counter check and send job.")
 				.WithIdentity("Jarvis.Checks.WaterCounterCheck", "Jarvis.Checks")
+				.StoreDurably()
 				.Build();
+
+			await _scheduler.AddJob(job, true, cancellationToken);
 
 			ITrigger trigger = TriggerBuilder.Create()
 				.WithIdentity("Jarvis.Checks.Triggers.MonthlyTrigger", "Jarvis.Checks.Triggers")
-				.WithDescription("Monthly (every month at 20th dat at 13:00) Jarvis water counter check and send trigger.")
+				.WithDescription("Monthly (every month at 20th day at 13:00) Jarvis water counter check and send trigger.")
 				//.WithCronSchedule("0 0 13 20 1/1 ? *")
-				.WithCronSchedule("0 0/1 0 ? * * *") // every minute - debug purposes only
+				.ForJob(job)
+				.WithCronSchedule("0/10 0 0 ? * * *", b=> b.InTimeZone(TimeZoneInfo.Local).WithMisfireHandlingInstructionFireAndProceed().Build()) // every 10 seconds - debug purposes only
 				.StartNow()
 				.Build();
 
-			await _scheduler.ScheduleJob(job, trigger, cancellationToken);
+			var scheduleResult = await _scheduler.ScheduleJob(trigger, cancellationToken);
 
-			await _scheduler.Start(cancellationToken);
+			//var scheduleResult = await _scheduler.ScheduleJob(job, trigger, cancellationToken);
+
+			//await _scheduler.Start(cancellationToken);
 		}
 
 		public Task StopAsync(CancellationToken cancellationToken)
