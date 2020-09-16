@@ -18,7 +18,7 @@ namespace Jarvis.SstCloud.Client.Tests
 			}
 
 			var ret = new SstCloudSettings(
-				"http://api.sst-cloud.com/",
+				"https://api.sst-cloud.com/",
 				credentials["Email"]?.Value<string>(),
 				credentials["Password"]?.Value<string>());
 			return ret;

@@ -30,7 +30,7 @@ namespace Jarvis.Server.Infrastructure
 			var letterBody = template
 				.Replace("%hot_water_counter_value%", (hotWaterInfo.Value / 1000D).ToString(CultureInfo.CurrentCulture))
 				.Replace("%cold_water_counter_value%", (coldWaterInfo.Value / 1000D).ToString(CultureInfo.CurrentCulture))
-				.Replace("%date_data_valid_on%", DateTime.Now.ToString("D"));
+				.Replace("%date_data_valid_on%", DateTime.Now.ToString("D", CultureInfo.GetCultureInfo("RU-ru")));
 
 			var message = new MailMessage()
 			{

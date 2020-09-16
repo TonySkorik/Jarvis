@@ -71,7 +71,7 @@ namespace Jarvis.SstCloud.Client
 
 		public async Task<List<WaterCounterInfo>> GetHouseWaterCountersAsync(int houseId, string authToken)
 		{
-			var request = CreateRequest($"/houses/{houseId}/counters", Method.GET, authToken);
+			var request = CreateRequest($"/houses/{houseId}/counters/", Method.GET, authToken);
 			var response = await GetResponse(request);
 			var countersResult = response.GetResponseBodyAsObjectList<WaterCounterInfo>();
 
@@ -107,7 +107,9 @@ namespace Jarvis.SstCloud.Client
 			};
 
 			request.AddHeader("Content-Type", "application/json");
-			request.AddHeader("Accept", "application/json");
+			request.AddHeader("Accept", "*/*");
+			request.AddHeader("WWW-Authenticate", "Token");
+
 			if (!string.IsNullOrEmpty(authToken))
 			{
 				request.AddHeader("Authorization", $"Token {authToken}");
@@ -119,7 +121,7 @@ namespace Jarvis.SstCloud.Client
 				request.AddJsonBody(t);
 			}
 
-			if (parameters != null)
+			if (parameters != null && parameters.Length > 0)
 			{
 				foreach (var parameter in parameters)
 				{

@@ -25,8 +25,8 @@ namespace Jarvis.SstCloud.Client.Tests
 		[Fact]
 		public async Task TestLogin()
 		{
-			var loggedIn = await _client.LogInAsync();
-			loggedIn.Should().NotBeNullOrEmpty();
+			var authToken = await _client.LogInAsync();
+			authToken.Should().NotBeNullOrEmpty();
 		}
 
 		[Fact]
@@ -41,8 +41,10 @@ namespace Jarvis.SstCloud.Client.Tests
 		public async Task TestGetWaterCounters()
 		{
 			var authToken = await _client.LogInAsync();
-			var house = (await _client.GetHousesAsync(authToken)).First();
+			var houses = await _client.GetHousesAsync(authToken);
+			var house = houses.First();
 			var houseId = house.Id;
+			authToken = await _client.LogInAsync();
 			var countersInfo = await _client.GetHouseWaterCountersAsync(houseId, authToken);
 
 			countersInfo.Should().NotBeNullOrEmpty();
