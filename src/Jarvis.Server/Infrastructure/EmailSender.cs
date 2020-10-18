@@ -20,7 +20,8 @@ namespace Jarvis.Server.Infrastructure
 			_appSettings = appSettings;
 			_smtpClient = new SmtpClient(appSettings.Application.EmailSender.Host, appSettings.Application.EmailSender.Port)
 			{
-				Credentials = new NetworkCredential(appSettings.Application.EmailSender.Login, appSettings.Application.EmailSender.Password)
+				Credentials = new NetworkCredential(appSettings.Application.EmailSender.Login, appSettings.Application.EmailSender.Password),
+				EnableSsl = true,
 			};
 		}
 

@@ -17,26 +17,15 @@
 			<durable>true</durable>
 			<recover>false</recover>
 		</job>
-		<!--<trigger>
-			<simple>
-				<name>Jarvis.Checks.Triggers.MonthlyTrigger</name>
-				<group>Jarvis.Checks.Triggers</group>
-				<description>Monthly (every month at 20th dat at 13:00) Jarvis water counter check and send trigger.</description>
-				<job-name>Jarvis.Checks.WaterCounterCheck</job-name>
-				<job-group>Jarvis.Checks</job-group>
-				<repeat-count>-1</repeat-count>
-				<repeat-interval>2000</repeat-interval>
-			</simple>
-		</trigger>-->
 
 		<trigger>
 			<cron>
 				<name>Jarvis.Checks.Triggers.MonthlyTrigger</name>
 				<group>Jarvis.Checks.Triggers</group>
-				<description>Monthly (every month at 20th day at 13:00) Jarvis water counter check and send trigger.</description>
+				<description>Monthly (every month at 20th day at 12:00) Jarvis water counter check and send trigger.</description>
 				<job-name>Jarvis.Checks.WaterCounterCheck</job-name>
 				<job-group>Jarvis.Checks</job-group>
-				<cron-expression>0 0 13 20 1/1 ? *</cron-expression>
+				<cron-expression>0 0 12 20 * ? *</cron-expression>
 			</cron>
 		</trigger>
 	</schedule>

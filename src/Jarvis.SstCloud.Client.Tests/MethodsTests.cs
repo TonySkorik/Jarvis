@@ -15,37 +15,38 @@ namespace Jarvis.SstCloud.Client.Tests
 	public class MethodsTests
 	{
 		private readonly SstCloudClient _client;
+		private readonly CancellationToken _ct = CancellationToken.None;
 
 		public MethodsTests()
 		{
 			var provider = new DummySstCloudSettingsProvider();
-			_client = new SstCloudClient(provider, CancellationToken.None);
+			_client = new SstCloudClient(provider);
 		}
 
 		[Fact]
 		public async Task TestLogin()
 		{
-			var authToken = await _client.LogInAsync();
+			var authToken = await _client.LogInAsync(_ct);
 			authToken.Should().NotBeNullOrEmpty();
 		}
 
 		[Fact]
 		public async Task TestGetHouses()
 		{
-			var authToken = await _client.LogInAsync();
-			var houses = await _client.GetHousesAsync(authToken);
+			var authToken = await _client.LogInAsync(_ct);
+			var houses = await _client.GetHousesAsync(authToken, _ct);
 			houses.Count.Should().Be(1);
 		}
 
 		[Fact]
 		public async Task TestGetWaterCounters()
 		{
-			var authToken = await _client.LogInAsync();
-			var houses = await _client.GetHousesAsync(authToken);
+			var authToken = await _client.LogInAsync(_ct);
+			var houses = await _client.GetHousesAsync(authToken, _ct);
 			var house = houses.First();
-			var houseId = house.Id;
-			authToken = await _client.LogInAsync();
-			var countersInfo = await _client.GetHouseWaterCountersAsync(houseId, authToken);
+			var houseName = house.Name;
+			authToken = await _client.LogInAsync(_ct);
+			var countersInfo = await _client.GetHouseWaterCountersAsync(houseName, authToken, _ct);
 
 			countersInfo.Should().NotBeNullOrEmpty();
 			countersInfo.Count.Should().Be(2);

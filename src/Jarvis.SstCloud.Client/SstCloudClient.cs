@@ -21,17 +21,15 @@ namespace Jarvis.SstCloud.Client
 		#region Private
 
 		private readonly SstCloudSettings _settings;
-		private readonly CancellationToken _cancellationToken;
 		private readonly RestClient _client;
 
 		#endregion
 
 		#region Ctor
 
-		public SstCloudClient(ISstCloudSettingsProvider settingsProvider, in CancellationToken cancellationToken)
+		public SstCloudClient(ISstCloudSettingsProvider settingsProvider)
 		{
 			_settings = settingsProvider.GetSettings();
-			_cancellationToken = cancellationToken;
 			_client = new RestClient(_settings.Uri);
 		}
 
@@ -39,40 +37,49 @@ namespace Jarvis.SstCloud.Client
 
 		#region API Methods
 
-		public async Task<string> LogInAsync()
+		public async Task<string> LogInAsync(CancellationToken cancellationToken)
 		{
 			var request = CreateRequest("/auth/login/", Method.POST, null, AuthInfo.FromSstSettings(_settings));
-			var response = await _client.ExecuteAsync(request, _cancellationToken);
+			var response = await _client.ExecuteAsync(request, cancellationToken);
 			var key = response.GetResponseBodyProperty<string>("key");
 
 			return key;
 		}
 
-		public async Task<UserInfo> GetUserInfoAsync(string authToken)
+		public async Task<UserInfo> GetUserInfoAsync(string authToken, CancellationToken cancellationToken)
 		{
 			var request = CreateRequest("/auth/login/", Method.GET, authToken);
-			var response = await GetResponse(request);
+			var response = await GetResponse(request, cancellationToken);
 			return response.GetResponseBodyAsObject<UserInfo>();
 		}
 
-		public async Task<List<HouseInfo>> GetHousesAsync(string authToken)
+		public async Task<List<HouseInfo>> GetHousesAsync(string authToken, CancellationToken cancellationToken)
 		{
 			var request = CreateRequest("/houses/", Method.GET, authToken);
-			var response = await GetResponse(request);
+			var response = await GetResponse(request, cancellationToken);
 			return response.GetResponseBodyAsObjectList<HouseInfo>();
 		}
 
-		public async Task<HouseInfo> GetHouseAsync(int houseId, string authToken)
+		public async Task<HouseInfo> GetHouseAsync(int houseId, string authToken, CancellationToken cancellationToken)
 		{
 			var request = CreateRequest($"/houses/{houseId}/", Method.GET, authToken);
-			var response = await GetResponse(request);
+			var response = await GetResponse(request, cancellationToken);
 			return response.GetResponseBodyAsObject<HouseInfo>();
 		}
 
-		public async Task<List<WaterCounterInfo>> GetHouseWaterCountersAsync(int houseId, string authToken)
+		public async Task<List<WaterCounterInfo>> GetHouseWaterCountersAsync(string houseName, string authToken, CancellationToken cancellationToken)
 		{
-			var request = CreateRequest($"/houses/{houseId}/counters/", Method.GET, authToken);
-			var response = await GetResponse(request);
+			var housesResponse = await GetHousesAsync(authToken, cancellationToken);
+			var houseId = housesResponse
+				.FirstOrDefault(h => h.Name.Equals(houseName, StringComparison.InvariantCultureIgnoreCase))?.Id;
+
+			if (!houseId.HasValue)
+			{
+				throw new InvalidOperationException($"House with name {houseName} not found.");
+			}
+
+			var request = CreateRequest($"/houses/{houseId.Value}/counters/", Method.GET, authToken);
+			var response = await GetResponse(request, cancellationToken);
 			var countersResult = response.GetResponseBodyAsObjectList<WaterCounterInfo>();
 
 			return countersResult;
@@ -82,9 +89,9 @@ namespace Jarvis.SstCloud.Client
 
 		#region Service methods
 
-		private async Task<IRestResponse> GetResponse(RestRequest request)
+		private async Task<IRestResponse> GetResponse(RestRequest request, CancellationToken cancellationToken)
 		{
-			var response = await _client.ExecuteAsync(request, _cancellationToken);
+			var response = await _client.ExecuteAsync(request, cancellationToken);
 			if (response.StatusCode != HttpStatusCode.OK)
 			{
 				//TODO: log an error

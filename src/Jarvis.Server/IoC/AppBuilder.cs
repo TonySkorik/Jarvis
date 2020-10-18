@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
 using Jarvis.Server.Configuration;
@@ -35,25 +36,24 @@ namespace Jarvis.Server.IoC
 			containerBuilder.RegisterType<EmailSender>()
 				.AsSelf()
 				.InstancePerDependency();
-			
-			//NameValueCollection props = new NameValueCollection
-			//{
-			//	{ "quartz.serializer.type", "binary" },
-			//	{ "quartz.scheduler.instanceName", "JarvisScheduler" },
-			//	{ "quartz.jobStore.type", "Quartz.Simpl.RAMJobStore, Quartz" },
-			//	{ "quartz.threadPool.threadCount", "16" }
-			//};
-
-			var quartzProperties = settings.Quartz.ToProperties();
-			
-			containerBuilder.RegisterInstance(new StdSchedulerFactory(quartzProperties))
-				.As<ISchedulerFactory>()
+			containerBuilder.RegisterType<CancellationTokenSource>()
+				.AsSelf()
 				.SingleInstance();
 
-			//containerBuilder.RegisterType<WaterCheckerJob>()
-			//	.As<IJob>()
-			//	.AsSelf()
+			//var quartzProperties = settings.Quartz.ToProperties();
+
+			//MicrosoftDependencyInjectionJobFactory f = new MicrosoftDependencyInjectionJobFactory(, new JobFactoryOptions()
+			//{
+				
+			//});
+
+			//containerBuilder.RegisterInstance(new StdSchedulerFactory(quartzProperties))
+			//	.As<ISchedulerFactory>()
 			//	.SingleInstance();
+
+			containerBuilder.RegisterType<WaterCheckerJob>()
+				.AsSelf()
+				.SingleInstance();
 		}
 
 		public static void BuildLogger(

@@ -22,7 +22,7 @@ namespace Jarvis.Server.Configuration
 			public string Host { set; get; }
 			public int Port { set; get; }
 			public string Login { get; set; }
-			public SecureString Password { get; set; }
+			public string Password { get; set; }
 			public string From { set; get; }
 			public string[] To { set; get; }
 			public string[] Bcc { set; get; }
@@ -35,8 +35,7 @@ namespace Jarvis.Server.Configuration
 			public string Url { get; set; }
 			public string Login { get; set; }
 			public string Password { get; set; }
-
-			public int HouseId { set; get; }
+			public string HouseName { set; get; }
 		}
 
 		public class LoggingSettings
