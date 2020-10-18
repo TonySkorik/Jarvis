@@ -6,7 +6,6 @@ using Autofac.Extensions.DependencyInjection;
 using Jarvis.Server.Infrastructure.Services;
 using Jarvis.Server.IoC;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Quartz;
 using Serilog;
@@ -47,6 +46,7 @@ namespace Jarvis.Server
 		public static IHostBuilder CreateHostBuilder(string[] args) =>
 			Host.CreateDefaultBuilder(args)
 				.UseSerilog(AppBuilder.BuildLogger)
+				.UseWindowsService()
 				.UseServiceProviderFactory(
 					cntxt => new AutofacServiceProviderFactory(
 						(cb) => AppBuilder.BuildContainer(cb, cntxt)
@@ -56,7 +56,6 @@ namespace Jarvis.Server
 					s =>
 					{
 						//s.AddHostedService<WaterCheckerService>();
-						
 						s.AddQuartz(q =>
 						{
 							// handy when part of cluster or you want to otherwise identify multiple schedulers

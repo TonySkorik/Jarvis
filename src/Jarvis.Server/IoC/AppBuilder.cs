@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
@@ -60,9 +62,17 @@ namespace Jarvis.Server.IoC
 			HostBuilderContext context,
 			LoggerConfiguration loggerConfiguration)
 		{
-			loggerConfiguration.ReadFrom.Configuration(context.Configuration, "Application")
+			var appSettings = context.Configuration.Get<AppSettings>();
+
+			var config = loggerConfiguration.ReadFrom.Configuration(context.Configuration, "Application");
+			var logFilePath = Path.Combine(
+				Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
+				appSettings.Application.Logging.LogFilePath);
+
+			config
+				.MinimumLevel.Is(appSettings.Application.Logging.EventLevel)
 				.WriteTo.Console()
-				// TODO: write to file
+				.WriteTo.File(logFilePath, appSettings.Application.Logging.EventLevel)
 				.Enrich.WithProperty("ApplicationName", typeof(Program).Assembly.GetName().Name)
 				.Enrich.WithProperty("Environment", context.HostingEnvironment);
 		}

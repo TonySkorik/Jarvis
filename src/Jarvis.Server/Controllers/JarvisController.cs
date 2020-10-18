@@ -21,5 +21,11 @@ namespace Jarvis.Server.Controllers
 			_settings = settings;
 			_logger = logger;
 		}
+
+		[HttpGet("status")]
+		public string GetStatus()
+		{
+			return "OK";
+		}
 	}
 }
