@@ -46,7 +46,6 @@ namespace Jarvis.Server
 		public static IHostBuilder CreateHostBuilder(string[] args) =>
 			Host.CreateDefaultBuilder(args)
 				.UseSerilog(AppBuilder.BuildLogger)
-				.UseWindowsService()
 				.UseServiceProviderFactory(
 					cntxt => new AutofacServiceProviderFactory(
 						(cb) => AppBuilder.BuildContainer(cb, cntxt)
@@ -110,6 +109,8 @@ namespace Jarvis.Server
 					webBuilder =>
 					{
 						webBuilder.UseStartup<Startup>();
-					});
+					})
+				.UseWindowsService()
+				.UseSystemd();
 	}
 }
