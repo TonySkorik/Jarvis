@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
+using Jarvis.Server.Configuration;
 using Jarvis.Server.Infrastructure.Services;
 using Jarvis.Server.IoC;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Quartz;
 using Serilog;
@@ -106,8 +108,14 @@ namespace Jarvis.Server
 						});
 					})
 				.ConfigureWebHostDefaults(
-					webBuilder =>
-					{
+					webBuilder => { 
+						webBuilder.UseKestrel(
+							(context, opt) =>
+							{
+								var config = context.Configuration.Get<AppSettings>();
+								opt.ListenLocalhost(config.HostedApi.Port);
+							});
+
 						webBuilder.UseStartup<Startup>();
 					})
 				.UseWindowsService()

@@ -26,7 +26,12 @@ namespace Jarvis.Server.Infrastructure.Services
 			_shutdownSwitch = shutdownSwitch;
 		}
 
-		public async Task Execute(IJobExecutionContext context)
+		public Task Execute(IJobExecutionContext context)
+		{
+			return ExecuteCore();
+		}
+
+		public async Task<string> ExecuteCore()
 		{
 			await _mutex.WaitAsync();
 			try
@@ -36,9 +41,11 @@ namespace Jarvis.Server.Infrastructure.Services
 					_appSetings.Application.SstCloud.HouseName,
 					authToken,
 					_shutdownSwitch.Token);
-				await _emailSender.SendStatisticsAsync(
+				var sentLetter = await _emailSender.SendStatisticsAsync(
 					results.First(i => i.IsHotWaterCounter),
 					results.First(i => !i.IsHotWaterCounter));
+
+				return sentLetter;
 			}
 			finally
 			{

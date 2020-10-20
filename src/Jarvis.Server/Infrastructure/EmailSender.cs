@@ -25,7 +25,7 @@ namespace Jarvis.Server.Infrastructure
 			};
 		}
 
-		public async Task SendStatisticsAsync(WaterCounterInfo hotWaterInfo, WaterCounterInfo coldWaterInfo)
+		public async Task<string> SendStatisticsAsync(WaterCounterInfo hotWaterInfo, WaterCounterInfo coldWaterInfo)
 		{
 			var template = await File.ReadAllTextAsync(_appSettings.Application.EmailSender.TemplatePath);
 			var letterBody = template
@@ -44,6 +44,8 @@ namespace Jarvis.Server.Infrastructure
 			SetMailAddresses(message.Bcc, _appSettings.Application.EmailSender.Bcc);
 			
 			await _smtpClient.SendMailAsync(message);
+
+			return letterBody;
 		}
 
 		private void SetMailAddresses(
