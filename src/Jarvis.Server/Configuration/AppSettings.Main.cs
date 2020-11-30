@@ -28,6 +28,7 @@ namespace Jarvis.Server.Configuration
 			public string[] Bcc { set; get; }
 			public string Subject { set; get; }
 			public string TemplatePath { set; get; }
+			public string[] AdminEmails { set; get; }
 		}
 
 		public class SstCloudApiSettings

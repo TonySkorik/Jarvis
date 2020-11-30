@@ -48,6 +48,23 @@ namespace Jarvis.Server.Infrastructure
 			return letterBody;
 		}
 
+		public async Task<string> NotifyAboutJarvisException(string errorMessage)
+		{
+			string letterBody = $"Exception happened during Jarvis operations: {Environment.NewLine} {errorMessage}";
+			var message = new MailMessage()
+			{
+				Body = letterBody,
+				From = new MailAddress(_appSettings.Application.EmailSender.From),
+				Subject = _appSettings.Application.EmailSender.Subject
+			};
+
+			SetMailAddresses(message.To, _appSettings.Application.EmailSender.AdminEmails);
+
+			await _smtpClient.SendMailAsync(message);
+
+			return letterBody;
+		}
+
 		private void SetMailAddresses(
 			MailAddressCollection collectionToUpdate,
 			IEnumerable<string> addressesToAdd)
