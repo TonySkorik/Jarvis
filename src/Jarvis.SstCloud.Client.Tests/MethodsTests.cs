@@ -42,10 +42,11 @@ namespace Jarvis.SstCloud.Client.Tests
 		public async Task TestGetWaterCounters()
 		{
 			var authToken = await _client.LogInAsync(_ct);
+
 			var houses = await _client.GetHousesAsync(authToken, _ct);
 			var house = houses.First();
 			var houseName = house.Name;
-			authToken = await _client.LogInAsync(_ct);
+			
 			var countersInfo = await _client.GetHouseWaterCountersAsync(houseName, authToken, _ct);
 
 			countersInfo.Should().NotBeNullOrEmpty();
