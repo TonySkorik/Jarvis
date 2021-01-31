@@ -1,0 +1,1 @@
+docker build -f Jarvis.Server/Dockerfile -t jarvis-server:latest .

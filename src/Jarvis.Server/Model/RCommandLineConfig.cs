@@ -9,6 +9,6 @@ namespace Jarvis.Server.Model
 	public record RCommandLineConfig
 	{
 		[Option("config-path", Required = false, HelpText = "Path to config file")]
-		public string ConfigFilePath { get; init; }
+		public string ConfigFolderPath { get; init; }
 	}
 }

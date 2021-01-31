@@ -53,17 +53,28 @@ namespace Jarvis.Server
 				.ConfigureAppConfiguration(
 					conf =>
 					{
+						// get config from parameter
 						if (Parser.Default.ParseArguments<RCommandLineConfig>(args) is Parsed<RCommandLineConfig>
 							parsedArgs)
 						{
-							if (!string.IsNullOrEmpty(parsedArgs.Value.ConfigFilePath))
+							if (!string.IsNullOrEmpty(parsedArgs.Value.ConfigFolderPath))
 							{
 								conf.Sources.Clear();
-								string configPath = Path.Combine(parsedArgs.Value.ConfigFilePath, "appsettings.json");
+								string configPath = Path.Combine(parsedArgs.Value.ConfigFolderPath, "appsettings.json");
 								conf.AddJsonFile(configPath);
+
+								return;
 							}
 						}
-						
+
+						// get config from ENV
+						var configFolderPathFormEnv = Environment.GetEnvironmentVariable("CONFIG_FOLDER_PATH");
+						if (!string.IsNullOrEmpty(configFolderPathFormEnv))
+						{
+							conf.Sources.Clear();
+							string configPath = Path.Combine(configFolderPathFormEnv, "appsettings.json");
+							conf.AddJsonFile(configPath);
+						}
 					})
 				.UseSerilog(AppBuilder.BuildLogger)
 				.UseServiceProviderFactory(
