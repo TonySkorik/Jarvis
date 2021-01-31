@@ -2,13 +2,14 @@
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
     "Jarvis.Server": {
-        "commandName": "Project",
-        "launchUrl": "api/status",
-        "launchBrowser": true,
-        "environmentVariables": {
-            "ASPNETCORE_ENVIRONMENT": "Development"
-        },
-        "applicationUrl": "http://localhost:5007"
+      "commandName": "Project",
+      "commandLineArgs": "--config-path=\"./\"",
+      "launchBrowser": true,
+      "launchUrl": "api/status",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:5007"
     },
     "Docker": {
       "commandName": "Docker",

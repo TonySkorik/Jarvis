@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
+using CommandLine;
 using Jarvis.Server.Configuration;
 using Jarvis.Server.Infrastructure.Services;
 using Jarvis.Server.IoC;
+using Jarvis.Server.Model;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -47,6 +50,21 @@ namespace Jarvis.Server
 
 		public static IHostBuilder CreateHostBuilder(string[] args) =>
 			Host.CreateDefaultBuilder(args)
+				.ConfigureAppConfiguration(
+					conf =>
+					{
+						if (Parser.Default.ParseArguments<RCommandLineConfig>(args) is Parsed<RCommandLineConfig>
+							parsedArgs)
+						{
+							if (!string.IsNullOrEmpty(parsedArgs.Value.ConfigFilePath))
+							{
+								conf.Sources.Clear();
+								string configPath = Path.Combine(parsedArgs.Value.ConfigFilePath, "appsettings.json");
+								conf.AddJsonFile(configPath);
+							}
+						}
+						
+					})
 				.UseSerilog(AppBuilder.BuildLogger)
 				.UseServiceProviderFactory(
 					cntxt => new AutofacServiceProviderFactory(
