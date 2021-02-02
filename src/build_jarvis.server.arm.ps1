@@ -1,0 +1,1 @@
+docker build --platform linux/arm64/v8 -f Jarvis.Server/Dockerfile -t tonyskorik/jarvis-server:latest .
