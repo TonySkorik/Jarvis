@@ -14,7 +14,7 @@ namespace Jarvis.Server.Configuration
 			public SstCloudApiSettings SstCloud { set; get; }
 			public LoggingSettings Logging { set; get; }
 			public EmailSettings EmailSender { set; get; }
-
+			public string ScheduledJobsExecutionLogsFolder { set; get; } = "ScheduledJobsExecutionLogs";
 		}
 
 		public class EmailSettings

@@ -75,6 +75,8 @@ namespace Jarvis.Server
 							string configPath = Path.Combine(configFolderPathFormEnv, "appsettings.json");
 							conf.AddJsonFile(configPath);
 						}
+
+						// default - get config from appsettings.json in the app binaries folder
 					})
 				.UseSerilog(AppBuilder.BuildLogger)
 				.UseServiceProviderFactory(

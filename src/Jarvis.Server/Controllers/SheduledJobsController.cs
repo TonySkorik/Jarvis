@@ -23,7 +23,7 @@ namespace Jarvis.Server.Controllers
 			_logger = logger;
 			_waterCheckerJob = waterCheckerJob;
 		}
-
+		
 		[HttpGet("waterchecker")]
 		public async Task<string> ExecuteWaterChecker()
 		{

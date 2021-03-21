@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,7 +21,14 @@ namespace Jarvis.Server.Infrastructure.Services
 		private static readonly SemaphoreSlim _mutex = new SemaphoreSlim(1,1);
 		private readonly AsyncPolicy _retryPolicy;
 
-		public WaterCheckerJob(SstCloudClient client, AppSettings appSetings, EmailSender emailSender, ILogger logger, CancellationTokenSource shutdownSwitch)
+		public string Name => nameof(WaterCheckerJob);
+
+		public WaterCheckerJob(
+			SstCloudClient client,
+			AppSettings appSetings,
+			EmailSender emailSender,
+			ILogger logger,
+			CancellationTokenSource shutdownSwitch)
 		{
 			_client = client;
 			_appSetings = appSetings;
@@ -71,7 +79,7 @@ namespace Jarvis.Server.Infrastructure.Services
 						var sentLetter = await _emailSender.NotifyAboutJarvisException(ex.ToString());
 						return sentLetter;
 					});
-
+				
 				return sent;
 			}
 			finally
