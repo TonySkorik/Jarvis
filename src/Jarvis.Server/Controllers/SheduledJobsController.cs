@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Jarvis.Server.Configuration;
-using Jarvis.Server.Infrastructure.Services;
+using Jarvis.Server.Infrastructure.ScheduledJobs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 

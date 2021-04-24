@@ -10,7 +10,7 @@ using Autofac;
 using Jarvis.Server.Configuration;
 using Jarvis.Server.Diagnostics;
 using Jarvis.Server.Infrastructure;
-using Jarvis.Server.Infrastructure.Services;
+using Jarvis.Server.Infrastructure.ScheduledJobs;
 using Jarvis.SstCloud.Client;
 using Jarvis.SstCloud.Client.Configuration;
 using Microsoft.Extensions.Configuration;

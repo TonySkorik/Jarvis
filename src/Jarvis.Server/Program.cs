@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
 using CommandLine;
 using Jarvis.Server.Configuration;
-using Jarvis.Server.Infrastructure.Services;
+using Jarvis.Server.Infrastructure.ScheduledJobs;
 using Jarvis.Server.IoC;
 using Jarvis.Server.Model;
 using Microsoft.AspNetCore.Hosting;
@@ -121,7 +121,7 @@ namespace Jarvis.Server
 								.WithIdentity(waterCheckerJobKey)
 								.WithDescription("Monthly Jarvis water counter check and send job.")
 							);
-
+							
 							q.AddTrigger(t => t
 								.WithIdentity("Jarvis.Checks.Triggers.MonthlyTrigger", "Jarvis.Checks.Triggers")
 								.ForJob(waterCheckerJobKey)

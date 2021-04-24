@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,7 +8,7 @@ using Polly;
 using Quartz;
 using Serilog;
 
-namespace Jarvis.Server.Infrastructure.Services
+namespace Jarvis.Server.Infrastructure.ScheduledJobs
 {
 	public class WaterCheckerJob : IJob
 	{
@@ -18,7 +17,7 @@ namespace Jarvis.Server.Infrastructure.Services
 		private readonly ILogger _logger;
 		private readonly EmailSender _emailSender;
 		private readonly CancellationTokenSource _shutdownSwitch;
-		private static readonly SemaphoreSlim _mutex = new SemaphoreSlim(1,1);
+		private static readonly SemaphoreSlim _mutex = new(1,1);
 		private readonly AsyncPolicy _retryPolicy;
 
 		public string Name => nameof(WaterCheckerJob);
@@ -75,7 +74,7 @@ namespace Jarvis.Server.Infrastructure.Services
 				var sent = await _retryPolicy.ExecuteAsync(
 					async () =>
 					{
-						_logger.Error(ex, "Exception happened during Jarvis operations.");
+						_logger.Error(ex, "Exception happened during Jarvis operations");
 						var sentLetter = await _emailSender.NotifyAboutJarvisException(ex.ToString());
 						return sentLetter;
 					});
