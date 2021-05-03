@@ -23,7 +23,7 @@ namespace Jarvis.Server.Controllers
 		}
 
 		[HttpGet]
-		public RStatus GetStatus()
+		public Status GetStatus()
 		{
 			return new(
 				Environment.OSVersion.VersionString,

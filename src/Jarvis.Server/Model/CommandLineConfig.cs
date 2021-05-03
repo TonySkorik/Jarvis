@@ -6,9 +6,9 @@ using CommandLine;
 
 namespace Jarvis.Server.Model
 {
-	public record RCommandLineConfig
+	public record CommandLineConfig
 	{
 		[Option("config-path", Required = false, HelpText = "Path to config file")]
-		public string ConfigFolderPath { get; init; }
+		public string? ConfigFolderPath { get; init; }
 	}
 }

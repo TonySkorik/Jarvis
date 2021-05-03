@@ -54,7 +54,7 @@ namespace Jarvis.Server
 					conf =>
 					{
 						// get config from parameter
-						if (Parser.Default.ParseArguments<RCommandLineConfig>(args) is Parsed<RCommandLineConfig>
+						if (Parser.Default.ParseArguments<CommandLineConfig>(args) is Parsed<CommandLineConfig>
 							parsedArgs)
 						{
 							if (!string.IsNullOrEmpty(parsedArgs.Value.ConfigFolderPath))
@@ -84,60 +84,61 @@ namespace Jarvis.Server
 						(cb) => AppBuilder.BuildContainer(cb, cntxt)
 					)
 				)
-				.ConfigureServices(
-					s =>
-					{
-						//s.AddHostedService<WaterCheckerService>();
-						s.AddQuartz(q =>
-						{
-							// handy when part of cluster or you want to otherwise identify multiple schedulers
-							q.SchedulerId = "Scheduler-Jarvis-Main";
-
-							// we take this from appsettings.json, just show it's possible
-							// q.SchedulerName = "Quartz ASP.NET Core Sample Scheduler";
-
-							// we could leave DI configuration intact and then jobs need to have public no-arg constructor
-							// the MS DI is expected to produce transient job instances 
-							q.UseMicrosoftDependencyInjectionJobFactory(options =>
-							{
-								// if we don't have the job in DI, allow fallback to configure via default constructor
-							});
-
-							// or 
-							// q.UseMicrosoftDependencyInjectionScopedJobFactory();
-
-							// these are the defaults
-							q.UseSimpleTypeLoader();
-							q.UseInMemoryStore();
-							q.UseDefaultThreadPool(tp =>
-							{
-								tp.MaxConcurrency = 10;
-							});
+				//.ConfigureServices(
+				//	s =>
+				//	{
+				//		//s.AddHostedService<WaterCheckerService>();
+				//		s.AddQuartz(q =>
+				//		{
 							
-							// configure jobs with code
-							var waterCheckerJobKey = new JobKey("Jarvis.Checks.WaterCounterCheck", "Jarvis.Checks");
-							q.AddJob<WaterCheckerJob>(j => j
-								.StoreDurably()
-								.WithIdentity(waterCheckerJobKey)
-								.WithDescription("Monthly Jarvis water counter check and send job.")
-							);
-							
-							q.AddTrigger(t => t
-								.WithIdentity("Jarvis.Checks.Triggers.MonthlyTrigger", "Jarvis.Checks.Triggers")
-								.ForJob(waterCheckerJobKey)
-								//.WithCronSchedule("0/10 * * ? * *", b => b.InTimeZone(TimeZoneInfo.Local).WithMisfireHandlingInstructionIgnoreMisfires()) // every 10 seconds - debug purposes only
-								.WithCronSchedule("0 0 12 20 * ? *", b => b.InTimeZone(TimeZoneInfo.Local).WithMisfireHandlingInstructionIgnoreMisfires()) // every 20th day of every month
-								.StartNow()
-								.WithDescription("Monthly (every month at 20th day at 12:00) Jarvis water counter check and send trigger.")
-							);
-						});
+				//			// handy when part of cluster or you want to otherwise identify multiple schedulers
+				//			q.SchedulerId = "Scheduler-Jarvis-Main";
 
-						s.AddQuartzServer(options =>
-						{
-							// when shutting down we want jobs to complete gracefully
-							options.WaitForJobsToComplete = true;
-						});
-					})
+				//			// we take this from appsettings.json, just show it's possible
+				//			// q.SchedulerName = "Quartz ASP.NET Core Sample Scheduler";
+
+				//			// we could leave DI configuration intact and then jobs need to have public no-arg constructor
+				//			// the MS DI is expected to produce transient job instances 
+				//			q.UseMicrosoftDependencyInjectionJobFactory(options =>
+				//			{
+				//				// if we don't have the job in DI, allow fallback to configure via default constructor
+				//			});
+
+				//			// or 
+				//			// q.UseMicrosoftDependencyInjectionScopedJobFactory();
+
+				//			// these are the defaults
+				//			q.UseSimpleTypeLoader();
+				//			q.UseInMemoryStore();
+				//			q.UseDefaultThreadPool(tp =>
+				//			{
+				//				tp.MaxConcurrency = 10;
+				//			});
+							
+				//			// configure jobs with code
+				//			var waterCheckerJobKey = new JobKey("Jarvis.Checks.WaterCounterCheck", "Jarvis.Checks");
+				//			q.AddJob<WaterCheckerJob>(j => j
+				//				.StoreDurably()
+				//				.WithIdentity(waterCheckerJobKey)
+				//				.WithDescription("Monthly Jarvis water counter check and send job.")
+				//			);
+							
+				//			q.AddTrigger(t => t
+				//				.WithIdentity("Jarvis.Checks.Triggers.MonthlyTrigger", "Jarvis.Checks.Triggers")
+				//				.ForJob(waterCheckerJobKey)
+				//				//.WithCronSchedule("0/10 * * ? * *", b => b.InTimeZone(TimeZoneInfo.Local).WithMisfireHandlingInstructionIgnoreMisfires()) // every 10 seconds - debug purposes only
+				//				.WithCronSchedule("0 0 12 20 * ? *", b => b.InTimeZone(TimeZoneInfo.Local).WithMisfireHandlingInstructionIgnoreMisfires()) // every 20th day of every month
+				//				.StartNow()
+				//				.WithDescription("Monthly (every month at 20th day at 12:00) Jarvis water counter check and send trigger.")
+				//			);
+				//		});
+
+				//		s.AddQuartzServer(options =>
+				//		{
+				//			// when shutting down we want jobs to complete gracefully
+				//			options.WaitForJobsToComplete = true;
+				//		});
+				//	})
 				.ConfigureWebHostDefaults(
 					webBuilder => { 
 						webBuilder.UseKestrel(
@@ -150,6 +151,6 @@ namespace Jarvis.Server
 						webBuilder.UseStartup<Startup>();
 					})
 				.UseWindowsService()
-				.UseSystemd();
+								.UseSystemd();
 	}
 }

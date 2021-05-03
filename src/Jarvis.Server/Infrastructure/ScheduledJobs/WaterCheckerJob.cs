@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Jarvis.Server.Configuration;
+using Jarvis.Server.Model;
 using Jarvis.SstCloud.Client;
 using Polly;
 using Quartz;
@@ -10,7 +11,8 @@ using Serilog;
 
 namespace Jarvis.Server.Infrastructure.ScheduledJobs
 {
-	public class WaterCheckerJob : IJob
+	[DisallowConcurrentExecution] // either this or _mutex should be used
+	public class WaterCheckerJob : IJarvisJob
 	{
 		private readonly SstCloudClient _client;
 		private readonly AppSettings _appSetings;
@@ -21,7 +23,7 @@ namespace Jarvis.Server.Infrastructure.ScheduledJobs
 		private readonly AsyncPolicy _retryPolicy;
 
 		public string Name => nameof(WaterCheckerJob);
-
+		
 		public WaterCheckerJob(
 			SstCloudClient client,
 			AppSettings appSetings,
@@ -41,6 +43,11 @@ namespace Jarvis.Server.Infrastructure.ScheduledJobs
 					"Exception happened during WaterCheckerJob operations. Retrying {retryeCount} after {retryTimeout}",
 					context.Count,
 					retryTimeout));
+		}
+
+		public Task CheckScheduleMisses()
+		{
+			throw new NotImplementedException();
 		}
 
 		public Task Execute(IJobExecutionContext context)
@@ -74,7 +81,7 @@ namespace Jarvis.Server.Infrastructure.ScheduledJobs
 				var sent = await _retryPolicy.ExecuteAsync(
 					async () =>
 					{
-						_logger.Error(ex, "Exception happened during Jarvis operations");
+						_logger.Error(ex, "Exception happened during Jarvis water checker jobs operations");
 						var sentLetter = await _emailSender.NotifyAboutJarvisException(ex.ToString());
 						return sentLetter;
 					});

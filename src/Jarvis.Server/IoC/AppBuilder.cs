@@ -18,8 +18,12 @@ using Microsoft.Extensions.Hosting;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Logging;
+using Quartz.Simpl;
+using Quartz.Spi;
 using Serilog;
 using Serilog.Extensions.Logging;
+using ServiceStack.Data;
+using ServiceStack.OrmLite;
 
 namespace Jarvis.Server.IoC
 {
@@ -42,22 +46,28 @@ namespace Jarvis.Server.IoC
 				.AsSelf()
 				.SingleInstance();
 
-			//var quartzProperties = settings.Quartz.ToProperties();
-
-			//MicrosoftDependencyInjectionJobFactory f = new MicrosoftDependencyInjectionJobFactory(, new JobFactoryOptions()
-			//{
-				
-			//});
-
-			//containerBuilder.RegisterInstance(new StdSchedulerFactory(quartzProperties))
-			//	.As<ISchedulerFactory>()
-			//	.SingleInstance();
-
+			containerBuilder.Register<IDbConnectionFactory>(c =>
+				new OrmLiteConnectionFactory(settings.Application.JarvisDbConnectionString, SqliteDialect.Provider));
+			
 			containerBuilder.RegisterType<WaterCheckerJob>()
 				.AsSelf()
 				.SingleInstance();
-		}
 
+			containerBuilder.RegisterType<MicrosoftDependencyInjectionJobFactory>()
+				.As<IJobFactory>()
+				.SingleInstance();
+
+			containerBuilder.RegisterType<StdSchedulerFactory>()
+				.As<ISchedulerFactory>()
+				.SingleInstance();
+
+			// register Jarvis job schedules
+			foreach (var jobSchedule in settings.Application.JobSchedules)
+			{
+				containerBuilder.RegisterInstance(jobSchedule).SingleInstance();
+			}
+		}
+		
 		public static void BuildLogger(
 			HostBuilderContext context,
 			LoggerConfiguration loggerConfiguration)
