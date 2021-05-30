@@ -50,11 +50,45 @@ namespace Jarvis.Server.Infrastructure.ScheduledJobs
 					retryTimeout));
 		}
 
-		public Task CheckScheduleMisses(string scheduleCronExpression)
+		public async Task CheckScheduleMisses(string scheduleCronExpression)
 		{
 			var scheduleExpression = new CronExpression(scheduleCronExpression);
+			var nextScheduledRun = scheduleExpression.GetNextValidTimeAfter(DateTimeOffset.Now);
+			if (!nextScheduledRun.HasValue)
+			{
+				_logger.Error(
+					"Can't calculate schedule miss for job {jobCodeName} using cron expression {cronExpression} : unable to calculate newxt schedule run which is required for calculations",
+					CodeName,
+					scheduleCronExpression);
+				return;
+			}
 
-			throw new NotImplementedException();
+			var nextRunMonth = nextScheduledRun.Value.Month;
+			
+			var lastRunTime = await _jarvisStorage.GetJobLastRunTime(CodeName);
+
+			if (lastRunTime == null)
+			{
+				_logger.Warning(
+					"Can't calculate schedule miss for job {jobCodeName} using cron expression {cronExpression} : seems like job didn't run even once - no data in database fro the previous run",
+					CodeName,
+					scheduleCronExpression);
+				return;
+			}
+
+			var lastRunMonth = lastRunTime.Value.Month;
+			
+			if (nextRunMonth - lastRunMonth > 1) // 1 means that last run was in previous month - and all is ok. > 1 means that some runs are missed
+			{
+				// means that at least one month is missed
+				_logger.Information(
+					"Missed run detected for job {jobCodeName} using cron expression {cronExpression}. Misssed months : {missedMonthsCount}. Starting task now",
+					CodeName,
+					scheduleCronExpression,
+					nextRunMonth - lastRunMonth);
+
+				await ExecuteCore();
+			}
 		}
 
 		public Task Execute(IJobExecutionContext context)
