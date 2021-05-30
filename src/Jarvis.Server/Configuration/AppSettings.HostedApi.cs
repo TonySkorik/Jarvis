@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
+using Jarvis.Core.Configuration.Validation;
 using Serilog.Events;
 
 namespace Jarvis.Server.Configuration

@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
+using Jarvis.Core.Configuration;
 using Jarvis.Server.Configuration;
 using Jarvis.Server.Diagnostics;
 using Jarvis.Server.Infrastructure;
@@ -32,7 +33,14 @@ namespace Jarvis.Server.IoC
 		public static void BuildContainer(ContainerBuilder containerBuilder, HostBuilderContext context)
 		{
 			var settings = context.Configuration.Get<AppSettings>();
+
 			containerBuilder.RegisterInstance(settings)
+				.SingleInstance();
+			containerBuilder.RegisterType<DatabaseSettingsProvider>()
+				.As<IDatabaseSettingsProvider>()
+				.SingleInstance();
+			containerBuilder.RegisterType<Storage.Storage>()
+				.AsSelf()
 				.SingleInstance();
 			containerBuilder.RegisterType<SettingsProvider>()
 				.As<ISstCloudSettingsProvider>()

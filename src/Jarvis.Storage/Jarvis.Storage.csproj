@@ -2,10 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <langversion>latest</langversion>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Db\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ServiceStack.OrmLite.Sqlite" Version="5.11.0" />
+    <PackageReference Include="SQLite" Version="3.13.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Jarvis.Core\Jarvis.Core.csproj" />
+    <ProjectReference Include="..\Jarvis.Jobs.Core\Jarvis.Jobs.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Jarvis.Jobs.Core;
 using Jarvis.Server.Configuration;
-using Jarvis.Server.Model;
 using Jarvis.SstCloud.Client;
 using Polly;
 using Quartz;
@@ -12,30 +12,35 @@ using Serilog;
 namespace Jarvis.Server.Infrastructure.ScheduledJobs
 {
 	[DisallowConcurrentExecution] // either this or _mutex should be used
-	public class WaterCheckerJob : IJarvisJob
+	public class WaterCheckerJob : IJarvisJob, IJob
 	{
 		private readonly SstCloudClient _client;
 		private readonly AppSettings _appSetings;
 		private readonly ILogger _logger;
 		private readonly EmailSender _emailSender;
 		private readonly CancellationTokenSource _shutdownSwitch;
+		private readonly Storage.Storage _jarvisStorage;
 		private static readonly SemaphoreSlim _mutex = new(1,1);
 		private readonly AsyncPolicy _retryPolicy;
 
-		public string Name => nameof(WaterCheckerJob);
-		
+		public string CodeName => nameof(WaterCheckerJob);
+
+		public string Description => "Monthly water check and send job";
+
 		public WaterCheckerJob(
 			SstCloudClient client,
 			AppSettings appSetings,
 			EmailSender emailSender,
 			ILogger logger,
-			CancellationTokenSource shutdownSwitch)
+			CancellationTokenSource shutdownSwitch,
+			Storage.Storage jarvisStorage)
 		{
 			_client = client;
 			_appSetings = appSetings;
 			_emailSender = emailSender;
 			_logger = logger;
 			_shutdownSwitch = shutdownSwitch;
+			_jarvisStorage = jarvisStorage;
 			_retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(
 				5,
 				(retryCount, context) => TimeSpan.FromMinutes(retryCount),
@@ -45,8 +50,10 @@ namespace Jarvis.Server.Infrastructure.ScheduledJobs
 					retryTimeout));
 		}
 
-		public Task CheckScheduleMisses()
+		public Task CheckScheduleMisses(string scheduleCronExpression)
 		{
+			var scheduleExpression = new CronExpression(scheduleCronExpression);
+
 			throw new NotImplementedException();
 		}
 
@@ -65,7 +72,7 @@ namespace Jarvis.Server.Infrastructure.ScheduledJobs
 					{
 						var authToken = await _client.LogInAsync(_shutdownSwitch.Token);
 						var results = await _client.GetHouseWaterCountersAsync(
-							_appSetings.Application.SstCloud.HouseName,
+							_appSetings.Application!.SstCloud!.HouseName,
 							authToken,
 							_shutdownSwitch.Token);
 						var sentLetter = await _emailSender.SendStatisticsAsync(
@@ -73,6 +80,8 @@ namespace Jarvis.Server.Infrastructure.ScheduledJobs
 							results.First(i => !i.IsHotWaterCounter));
 						return sentLetter;
 					});
+
+				await _jarvisStorage.WriteJobRun(this, DateTime.Now);
 
 				return sent;
 			}

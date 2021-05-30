@@ -13,37 +13,37 @@ namespace Jarvis.Server.Configuration
 		public class Settings
 		{
 			public SstCloudApiSettings? SstCloud { set; get; }
-			public LoggingSettings? Logging { set; get; }
-			public EmailSettings? EmailSender { set; get; }
-			public string? JarvisDbConnectionString { set; get; }
-			public List<JarvisJobSchedule>? JobSchedules { set; get; }
+			public LoggingSettings Logging { set; get; } = null!;
+			public EmailSettings EmailSender { set; get; } = null!;
+			public string JarvisDbConnectionString { set; get; } = null!;
+			public List<JarvisJobSchedule> JobSchedules { set; get; } = null!;
 		}
 
 		public class EmailSettings
 		{
-			public string? Host { set; get; }
+			public string Host { set; get; } = null!;
 			public int Port { set; get; }
-			public string? Login { get; set; }
-			public string? Password { get; set; }
-			public string? From { set; get; }
-			public string[]? To { set; get; }
-			public string[]? Bcc { set; get; }
-			public string? Subject { set; get; }
-			public string? TemplatePath { set; get; }
-			public string[]? AdminEmails { set; get; }
+			public string Login { get; set; } = null!;
+			public string Password { get; set; } = null!;
+			public string From { set; get; } = null!;
+			public string[] To { set; get; } = null!;
+			public string[] Bcc { set; get; } = null!;
+			public string Subject { set; get; } = null!;
+			public string TemplatePath { set; get; } = null!;
+			public string[] AdminEmails { set; get; } = null!;
 		}
 
 		public class SstCloudApiSettings
 		{
-			public string? Url { get; set; }
-			public string? Login { get; set; }
-			public string? Password { get; set; }
-			public string? HouseName { set; get; }
+			public string Url { get; set; } = null!;
+			public string Login { get; set; } = null!;
+			public string Password { get; set; } = null!;
+			public string HouseName { set; get; } = null!;
 		}
 
 		public class LoggingSettings
 		{
-			public string? LogFilePath { get; set; }
+			public string LogFilePath { get; set; } = null!;
 			public LogEventLevel EventLevel { get; set; }
 		}
 	}

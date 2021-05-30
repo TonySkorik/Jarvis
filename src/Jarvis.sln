@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.Server", "Jarvis.Ser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jarvis.Storage", "Jarvis.Storage\Jarvis.Storage.csproj", "{743D3583-BF19-416D-BB20-0EE3C624A46B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jarvis.Jobs.Core", "Jarvis.Jobs.Core\Jarvis.Jobs.Core.csproj", "{3F2B991F-DB67-4D94-9D73-0D0C1D49DFED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{743D3583-BF19-416D-BB20-0EE3C624A46B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{743D3583-BF19-416D-BB20-0EE3C624A46B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{743D3583-BF19-416D-BB20-0EE3C624A46B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F2B991F-DB67-4D94-9D73-0D0C1D49DFED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F2B991F-DB67-4D94-9D73-0D0C1D49DFED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F2B991F-DB67-4D94-9D73-0D0C1D49DFED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F2B991F-DB67-4D94-9D73-0D0C1D49DFED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,6 +82,7 @@ Global
 		{6F91F90D-1792-4966-A481-99EC54A1A3B6} = {25FDB0F7-AB10-4501-863C-0F9EFB9C1058}
 		{38743E81-23A5-488B-B15E-3EFA9D7D8C5F} = {8A3D6822-A20F-4028-B4F2-C323BC4B94C7}
 		{743D3583-BF19-416D-BB20-0EE3C624A46B} = {2097737A-CCA8-44A4-914A-A771685C3AEC}
+		{3F2B991F-DB67-4D94-9D73-0D0C1D49DFED} = {2097737A-CCA8-44A4-914A-A771685C3AEC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA6532BB-D075-45B5-B4AA-39D58682FBDD}
