@@ -1,8 +1,7 @@
-﻿namespace Jarvis.SstCloud.Core.Model
+﻿namespace Jarvis.SstCloud.Core.Model;
+
+public enum DayType
 {
-	public enum DayType
-	{
-		Vacation,
-		Workday
-	}
+	Vacation,
+	Workday
 }

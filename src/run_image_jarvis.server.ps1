@@ -1,1 +1,0 @@
-docker run -p 127.0.0.1:5007:80/tcp --mount type=bind,src=d:/!_DEL_!/config/,dst=/config jarvis-server:latest

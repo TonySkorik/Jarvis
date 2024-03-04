@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.TestApp", "Jarvis.TestApp\Jarvis.TestApp.csproj", "{56AEDD5E-6022-4F9D-A7A7-E7F4C3836607}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.TestApp", "src\Jarvis.TestApp\Jarvis.TestApp.csproj", "{56AEDD5E-6022-4F9D-A7A7-E7F4C3836607}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.SstCloud.Client", "Jarvis.SstCloud.Client\Jarvis.SstCloud.Client.csproj", "{5BD54A55-1D53-4C35-B763-2235236230C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.SstCloud.Client", "src\Jarvis.SstCloud.Client\Jarvis.SstCloud.Client.csproj", "{5BD54A55-1D53-4C35-B763-2235236230C3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.SstCloud.Core", "Jarvis.SstCloud.Core\Jarvis.SstCloud.Core.csproj", "{5B41629A-4CE5-4A5C-8995-9AEE5A61034C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.SstCloud.Core", "src\Jarvis.SstCloud.Core\Jarvis.SstCloud.Core.csproj", "{5B41629A-4CE5-4A5C-8995-9AEE5A61034C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00. Libraries", "00. Libraries", "{1AAC1F9B-50BF-4C52-B32C-C619D600C1F8}"
 EndProject
@@ -15,15 +15,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. Core", "0. Core", "{2097
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. SstCloud", "1. SstCloud", "{1B4049B3-2102-4561-8DFB-2D01105D07C1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.Core", "Jarvis.Core\Jarvis.Core.csproj", "{E1C7F13A-E08B-4119-B749-68AE69E3D8DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.Core", "src\Jarvis.Core\Jarvis.Core.csproj", "{E1C7F13A-E08B-4119-B749-68AE69E3D8DE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{25FDB0F7-AB10-4501-863C-0F9EFB9C1058}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.SstCloud.Client.Tests", "Jarvis.SstCloud.Client.Tests\Jarvis.SstCloud.Client.Tests.csproj", "{6F91F90D-1792-4966-A481-99EC54A1A3B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.SstCloud.Client.Tests", "src\Jarvis.SstCloud.Client.Tests\Jarvis.SstCloud.Client.Tests.csproj", "{6F91F90D-1792-4966-A481-99EC54A1A3B6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01. Apps", "01. Apps", "{8A3D6822-A20F-4028-B4F2-C323BC4B94C7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.Server", "Jarvis.Server\Jarvis.Server.csproj", "{38743E81-23A5-488B-B15E-3EFA9D7D8C5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jarvis.Server", "src\Jarvis.Server\Jarvis.Server.csproj", "{38743E81-23A5-488B-B15E-3EFA9D7D8C5F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

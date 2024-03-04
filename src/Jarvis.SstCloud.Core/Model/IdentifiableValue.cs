@@ -1,10 +1,9 @@
 ﻿using Newtonsoft.Json;
 
-namespace Jarvis.SstCloud.Core.Model
+namespace Jarvis.SstCloud.Core.Model;
+
+public abstract class IdentifiableValue
 {
-	public abstract class IdentifiableValue
-	{
-		[JsonProperty("id")]
-		public int Id { get; set; }
-	}
+	[JsonProperty("id")]
+	public int Id { get; set; }
 }

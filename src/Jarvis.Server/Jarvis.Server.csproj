@@ -1,14 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <UserSecretsId>02728ce3-8565-41ec-9912-26bcdc30bc99</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>true</ImplicitUsings>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Remove="appsettings.logging.json" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Templates\water_counter_report_template.txt" />
@@ -21,16 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="appsettings.logging.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Autofac" Version="6.1.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="5.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="5.0.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
     <PackageReference Include="Polly" Version="7.2.1" />
     <PackageReference Include="Quartz" Version="3.2.4" />
     <PackageReference Include="Quartz.AspNetCore" Version="3.2.4" />
@@ -45,15 +36,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Jarvis.SstCloud.Client\Jarvis.SstCloud.Client.csproj" />
     <ProjectReference Include="..\Jarvis.SstCloud.Core\Jarvis.SstCloud.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="appsettings.Development.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -79,10 +61,5 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="HostedServices\" />
-  </ItemGroup>
-
-
+  
 </Project>

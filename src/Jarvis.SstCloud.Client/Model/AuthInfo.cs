@@ -1,23 +1,22 @@
 ﻿using Jarvis.SstCloud.Client.Configuration;
 using Newtonsoft.Json;
 
-namespace Jarvis.SstCloud.Client.Model
-{
-	internal class AuthInfo
-	{
-		[JsonProperty("username")]
-		public string UserName => Email;
-		[JsonProperty("email")]
-		public string Email { get; }
-		[JsonProperty("password")]
-		public string Password { get; }
+namespace Jarvis.SstCloud.Client.Model;
 
-		public AuthInfo(string email, string password) 
-			=> (Email, Password) = (email, password);
+internal class AuthInfo
+{
+	[JsonProperty("username")]
+	public string UserName => Email;
+	[JsonProperty("email")]
+	public string Email { get; }
+	[JsonProperty("password")]
+	public string Password { get; }
+
+	public AuthInfo(string email, string password) 
+		=> (Email, Password) = (email, password);
 		
-		public static object FromSstSettings(SstCloudSettings settings)
-		{
-			return new AuthInfo(settings.Email, settings.Password);
-		}
+	public static object FromSstSettings(SstCloudSettings settings)
+	{
+		return new AuthInfo(settings.Email, settings.Password);
 	}
 }
