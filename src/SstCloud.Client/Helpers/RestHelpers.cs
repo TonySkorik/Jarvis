@@ -2,9 +2,9 @@
 using Newtonsoft.Json.Linq;
 using RestSharp;
 
-namespace Jarvis.SstCloud.Client.Helpers;
+namespace SstCloud.Client.Helpers;
 
-public static class RestHelpers
+internal static class RestHelpers
 {
 	public static T GetTypedResponse<T>(this IRestResponse response)
 	{
@@ -14,13 +14,13 @@ public static class RestHelpers
 	public static T GetResponseBodyProperty<T>(this IRestResponse response, string propertyName)
 	{
 		var bodyObject = JObject.Parse(response.Content);
-		return bodyObject[propertyName].Value<T>();
-	}
-
-	public static T GetResponseBodyPropertyAsObject<T>(this IRestResponse response, string propertyName)
-	{
-		var bodyObject = JObject.Parse(response.Content);
-		return bodyObject[propertyName].ToObject<T>();
+		
+		if (!bodyObject.ContainsKey(propertyName))
+		{
+			throw new KeyNotFoundException($"Property '{propertyName}' is not found in response body.");
+		}
+		
+		return bodyObject[propertyName]!.Value<T>();
 	}
 
 	public static T GetResponseBodyAsObject<T>(this IRestResponse response)

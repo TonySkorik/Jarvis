@@ -3,8 +3,8 @@ using Autofac;
 using Jarvis.Server.Configuration;
 using Jarvis.Server.Infrastructure;
 using Jarvis.Server.Infrastructure.Services;
-using Jarvis.SstCloud.Client;
-using Jarvis.SstCloud.Client.Configuration;
+using SstCloud.Client;
+using SstCloud.Client.Configuration;
 using Serilog;
 
 namespace Jarvis.Server.IoC;

@@ -1,4 +1,4 @@
-﻿using Jarvis.SstCloud.Client.Configuration;
+﻿using SstCloud.Client.Configuration;
 
 namespace Jarvis.Server.Configuration;
 

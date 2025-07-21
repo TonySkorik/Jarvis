@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Mail;
 using Jarvis.Server.Configuration;
-using Jarvis.SstCloud.Core.Model;
+using SstCloud.Core.Model;
 
 namespace Jarvis.Server.Infrastructure;
 

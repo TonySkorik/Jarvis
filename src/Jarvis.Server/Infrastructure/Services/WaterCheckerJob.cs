@@ -1,5 +1,5 @@
 ﻿using Jarvis.Server.Configuration;
-using Jarvis.SstCloud.Client;
+using SstCloud.Client;
 using Polly;
 using Quartz;
 using ILogger = Serilog.ILogger;
@@ -9,24 +9,24 @@ namespace Jarvis.Server.Infrastructure.Services;
 public class WaterCheckerJob : IJob
 {
 	private readonly SstCloudClient _client;
-	private readonly AppSettings _appSetings;
+	private readonly AppSettings _appSettings;
 	private readonly ILogger _logger;
 	private readonly EmailSender _emailSender;
 	private readonly CancellationTokenSource _shutdownSwitch;
-	private static readonly SemaphoreSlim _mutex = new SemaphoreSlim(1,1);
+	private static readonly SemaphoreSlim _mutex = new (1,1);
 	private readonly AsyncPolicy _retryPolicy;
 
 	public string Name => nameof(WaterCheckerJob);
 
 	public WaterCheckerJob(
 		SstCloudClient client,
-		AppSettings appSetings,
+		AppSettings appSettings,
 		EmailSender emailSender,
 		ILogger logger,
 		CancellationTokenSource shutdownSwitch)
 	{
 		_client = client;
-		_appSetings = appSetings;
+		_appSettings = appSettings;
 		_emailSender = emailSender;
 		_logger = logger;
 		_shutdownSwitch = shutdownSwitch;
@@ -53,10 +53,12 @@ public class WaterCheckerJob : IJob
 				async () =>
 				{
 					var authToken = await _client.LogInAsync(_shutdownSwitch.Token);
+					
 					var results = await _client.GetHouseWaterCountersAsync(
-						_appSetings.Application.SstCloud.HouseName,
+						_appSettings.Application.SstCloud.HouseName,
 						authToken,
 						_shutdownSwitch.Token);
+					
 					var sentLetter = await _emailSender.SendStatisticsAsync(
 						results.First(i => i.IsHotWaterCounter),
 						results.First(i => !i.IsHotWaterCounter));

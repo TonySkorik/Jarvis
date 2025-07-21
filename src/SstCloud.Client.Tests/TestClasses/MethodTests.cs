@@ -1,16 +1,18 @@
 using FluentAssertions;
+using SstCloud.Client;
+using SstCloud.Client.Tests.Infrastructure;
 using Xunit;
 
-namespace Jarvis.SstCloud.Client.Tests;
+namespace SstCloud.Client.Tests.TestClasses;
 
-public class MethodsTests
+public class MethodTests
 {
 	private readonly SstCloudClient _client;
 	private readonly CancellationToken _ct = CancellationToken.None;
 
-	public MethodsTests()
+	public MethodTests()
 	{
-		var provider = new DummySstCloudSettingsProvider();
+		var provider = new FromFileSstCloudSettingsProvider();
 		_client = new SstCloudClient(provider);
 	}
 

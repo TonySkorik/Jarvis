@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>true</ImplicitUsings>
   </PropertyGroup>
@@ -34,8 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Jarvis.SstCloud.Client\Jarvis.SstCloud.Client.csproj" />
-    <ProjectReference Include="..\Jarvis.SstCloud.Core\Jarvis.SstCloud.Core.csproj" />
+    <ProjectReference Include="..\SstCloud.Client\SstCloud.Client.csproj" />
+    <ProjectReference Include="..\SstCloud.Core\SstCloud.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

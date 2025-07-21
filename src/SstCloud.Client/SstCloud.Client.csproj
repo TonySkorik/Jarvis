@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Jarvis.Core\Jarvis.Core.csproj" />
-    <ProjectReference Include="..\Jarvis.SstCloud.Core\Jarvis.SstCloud.Core.csproj" />
+    <ProjectReference Include="..\SstCloud.Core\SstCloud.Core.csproj" />
   </ItemGroup>
 
 </Project>

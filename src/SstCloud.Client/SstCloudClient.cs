@@ -1,12 +1,12 @@
 ﻿using System.Net;
-using Jarvis.SstCloud.Client.Configuration;
-using Jarvis.SstCloud.Client.Helpers;
-using Jarvis.SstCloud.Client.Model;
-using Jarvis.SstCloud.Core.Model;
+using SstCloud.Client.Helpers;
+using SstCloud.Core.Model;
 using Newtonsoft.Json;
 using RestSharp;
+using SstCloud.Client.Configuration;
+using SstCloud.Client.Model;
 
-namespace Jarvis.SstCloud.Client;
+namespace SstCloud.Client;
 
 public class SstCloudClient
 {
@@ -79,8 +79,6 @@ public class SstCloudClient
 
 	#endregion
 
-	#region Service methods
-
 	private async Task<IRestResponse> GetResponse(RestRequest request, CancellationToken cancellationToken)
 	{
 		var response = await _client.ExecuteAsync(request, cancellationToken);
@@ -130,6 +128,4 @@ public class SstCloudClient
 
 		return request;
 	}
-
-	#endregion
 }

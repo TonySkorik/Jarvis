@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Jarvis.SstCloud.Core.Model;
+namespace SstCloud.Core.Model;
 
 public abstract class IdentifiableValue
 {

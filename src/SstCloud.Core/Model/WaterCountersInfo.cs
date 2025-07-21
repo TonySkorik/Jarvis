@@ -1,35 +1,35 @@
 ﻿using Newtonsoft.Json;
 
-namespace Jarvis.SstCloud.Core.Model;
+namespace SstCloud.Core.Model;
 
 public class WaterCounterInfo : IdentifiableValue
 {
 	/*
 	[
-	{
-		"id": 39871,
-		"name": "Cold",
-		"line": 4,
-		"for_hot_water": false,
-		"max_value": 0,
-		"step": 10,
-		"value": 319881,
-		"prev_value": 319881,
-		"prev_step": 10,
-		"device": 29485
-	},
-	{
-		"id": 39870,
-		"name": "Hot",
-		"line": 3,
-		"for_hot_water": true,
-		"max_value": 0,
-		"step": 10,
-		"value": 346911,
-		"prev_value": 346911,
-		"prev_step": 10,
-		"device": 29485
-	}
+		{
+			"id": 39871,
+			"name": "Cold",
+			"line": 4,
+			"for_hot_water": false,
+			"max_value": 0,
+			"step": 10,
+			"value": 319881,
+			"prev_value": 319881,
+			"prev_step": 10,
+			"device": 29485
+		},
+		{
+			"id": 39870,
+			"name": "Hot",
+			"line": 3,
+			"for_hot_water": true,
+			"max_value": 0,
+			"step": 10,
+			"value": 346911,
+			"prev_value": 346911,
+			"prev_step": 10,
+			"device": 29485
+		}
 	]
 	*/
 

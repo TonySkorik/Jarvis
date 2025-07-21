@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Jarvis.SstCloud.Core.Model;
+namespace SstCloud.Core.Model;
 
 /// <summary>
 /// Represents SST cloud user information
@@ -15,12 +15,12 @@ public class UserInfo
 		/*
 		* {
 				"pk": 5388,
-				"username": "just.skorik@yandex.ru",
-				"email": "just.skorik@yandex.ru",
+				"username": "a@yandex.ru",
+				"email": "a@yandex.ru",
 				"profile": {
 					"id": 5362,
 					"phone": null,
-					"first_name": "Tony",
+					"first_name": "T",
 					"last_name": null,
 					"language": "en",
 					"user": 5388

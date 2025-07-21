@@ -1,13 +1,13 @@
 ﻿using Newtonsoft.Json;
 
-namespace Jarvis.SstCloud.Core.Model;
+namespace SstCloud.Core.Model;
 
 public class HouseInfo : IdentifiableValue
 {
 	/*
 	{
 		"id": 9086,
-		"owner": "just.skorik@yandex.ru",
+		"owner": "a@a.ru",
 		"workdays": {
 		"id": 9080,
 		"current_day": "vacation",
@@ -23,7 +23,7 @@ public class HouseInfo : IdentifiableValue
 		"next_workday": null,
 		"next_vacation": null,
 		"start_day": 0,
-		"house": 9086
+		"house": 908612
 		},
 		"timezone": "Europe/Moscow",
 		"created_at": "2019-03-14T15:36:30.228341Z",
@@ -35,7 +35,7 @@ public class HouseInfo : IdentifiableValue
 		"close_valves": 2,
 		"report_date": 24,
 		"users": [
-		5388
+		53881212
 		]
 	}
 	*/
@@ -50,7 +50,7 @@ public class HouseInfo : IdentifiableValue
 		public int VacationsCount => VacationDaysIndexes?.Count ?? 0;
 
 		/// <summary>
-		/// Gets or sets the vacation days indexes. For sasurday and sunday returns [5,6]
+		/// Gets or sets the vacation days indexes. For saturday and sunday returns [5,6]
 		/// </summary>
 		/// <value>
 		/// The vacation days indexes.

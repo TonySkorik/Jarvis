@@ -1,4 +1,4 @@
-﻿namespace Jarvis.SstCloud.Client.Configuration;
+﻿namespace SstCloud.Client.Configuration;
 
 public interface ISstCloudSettingsProvider
 {

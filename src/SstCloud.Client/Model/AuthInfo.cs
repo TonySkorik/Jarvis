@@ -1,7 +1,7 @@
-﻿using Jarvis.SstCloud.Client.Configuration;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using SstCloud.Client.Configuration;
 
-namespace Jarvis.SstCloud.Client.Model;
+namespace SstCloud.Client.Model;
 
 internal class AuthInfo
 {

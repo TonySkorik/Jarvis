@@ -1,4 +1,4 @@
-﻿namespace Jarvis.SstCloud.Core.Model;
+﻿namespace SstCloud.Core.Model;
 
 public enum DayType
 {
